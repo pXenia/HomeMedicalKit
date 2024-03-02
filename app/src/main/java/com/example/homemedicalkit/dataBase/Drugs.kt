@@ -13,8 +13,6 @@ data class Drugs(
     var drugId: Long = 0L,
     @ColumnInfo(name = "name")
     var drugName: String = "",
-    @ColumnInfo(name = "expiration_date")
-    var drugExpirationDate: Date = Date(1/1/2020),
     @ColumnInfo(name = "image")
     var drugImage: String = "",
     @ColumnInfo(name = "description")
