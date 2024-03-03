@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import java.security.AccessControlContext
 
-@Database(entities = [Drugs::class],version = 1, exportSchema = false)
+@Database(entities = [Medicine::class],version = 1, exportSchema = false)
 abstract class MedicalKitDatabase: RoomDatabase() {
-    abstract val drugDao: DrugDao
+    abstract val medicineDao: MedicineDao
     companion object{
         @Volatile
         private var INSTANCE: MedicalKitDatabase? = null

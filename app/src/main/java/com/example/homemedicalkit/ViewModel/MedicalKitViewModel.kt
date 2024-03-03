@@ -2,16 +2,16 @@ package com.example.homemedicalkit.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homemedicalkit.dataBase.DrugDao
-import com.example.homemedicalkit.dataBase.Drugs
+import com.example.homemedicalkit.dataBase.MedicineDao
+import com.example.homemedicalkit.dataBase.Medicine
 import kotlinx.coroutines.launch
 
-class MedicalKitViewModel(val dao: DrugDao): ViewModel() {
-    var newDrugName = ""
+class MedicalKitViewModel(val dao: MedicineDao): ViewModel() {
+    var newMedicineName = ""
     fun addDrug(){
         viewModelScope.launch {
-            val drug = Drugs()
-            drug.drugName = newDrugName
+            val drug = Medicine()
+            drug.medicineName = newMedicineName
             dao.insert(drug)
         }
     }

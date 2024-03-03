@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -38,7 +37,6 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.homemedicalkit.R
@@ -48,9 +46,9 @@ import com.example.homemedicalkit.ui.theme.LightBlue1
 import com.example.homemedicalkit.ui.theme.LightBlue2
 
 
-class DrugsListOneKit() {
+class MedicinesListOneKit() {
     @Composable
-    fun DrugListElements(medKitName: String = "Моя аптечка") {
+    fun MedicineListElements(medKitName: String = "Моя аптечка") {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -62,7 +60,7 @@ class DrugsListOneKit() {
                     .padding(10.dp)
             ) {
                 items(10) {
-                    DrugElementCast()
+                    MedicineElementCast()
                     Spacer(modifier = Modifier.padding(5.dp))
                 }
             }
@@ -100,14 +98,14 @@ class DrugsListOneKit() {
                     color = LightBlue2
                 )
             )
-            TextFildCast()
+            TextFieldCast()
 
         }
 
     }
 
     @Composable
-    fun TextFildCast() {
+    fun TextFieldCast() {
         var textInp = remember { mutableStateOf("") }
         BasicTextField(
             modifier = Modifier
@@ -150,7 +148,7 @@ class DrugsListOneKit() {
     }
 
     @Composable
-    fun DrugElementCast() {
+    fun MedicineElementCast() {
         Card(
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
