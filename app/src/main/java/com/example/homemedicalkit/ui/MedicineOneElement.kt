@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
@@ -54,6 +55,7 @@ import com.example.homemedicalkit.ui.theme.DarkBlue
 import com.example.homemedicalkit.ui.theme.LightBlue1
 import com.example.homemedicalkit.ui.theme.LightBlue2
 import com.example.homemedicalkit.ui.theme.Orange80
+import com.example.homemedicalkit.ui.tools.CommonTools
 
 class MedicineOneElement {
     @Preview(showSystemUi = true)
@@ -104,7 +106,20 @@ class MedicineOneElement {
             Spacer(modifier = Modifier.padding(20.dp))
             MedicinesListOneKit().TextFieldCast()
             Spacer(modifier = Modifier.padding(8.dp))
-            MedicinesListOneKit().TextFieldCast() // do Date
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically) {
+                CommonTools().DateTimeField()
+                CommonTools().CheckBoxCast()
+                Text(
+                    text = "Осталось мало",
+                    style = TextStyle(
+                        fontFamily = Comfortaa,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 18.sp,
+                        color = LightBlue2
+                    ),
+                )
+            }
             Spacer(modifier = Modifier.padding(8.dp))
             LazyRow(
                 modifier = Modifier
@@ -117,7 +132,6 @@ class MedicineOneElement {
             }
             Spacer(modifier = Modifier.padding(8.dp))
             DescriptionMedicine()
-
         }
 
     }

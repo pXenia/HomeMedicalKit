@@ -125,7 +125,6 @@ class MedicinesListOneKit() {
                         .padding(top = 10.dp, start = 20.dp, end = 20.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(LightBlue1)
-
                 ) {
                     Row(
                         modifier = Modifier
