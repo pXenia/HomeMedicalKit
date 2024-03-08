@@ -9,20 +9,7 @@ import androidx.room.RoomDatabase
 abstract class MedicalKitDatabase: RoomDatabase() {
     abstract val medicineDao: MedicineDao
     companion object{
-        @Volatile
-        private var INSTANCE: MedicalKitDatabase? = null
-        // возвращает экземпляр БД
-        fun getInstance(context: Context): MedicalKitDatabase{
-            var instance = INSTANCE
-            if (instance == null){
-                instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    MedicalKitDatabase::class.java,
-                    "medicalKit_database"
-                ).build()
-                INSTANCE = instance
-            }
-            return instance
-        }
+        const val DATABASE_NAME = "medicine_db"
     }
+
 }

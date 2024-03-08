@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MedicineDao {
@@ -16,7 +17,7 @@ interface MedicineDao {
     @Delete
     suspend fun delete(medicine: Medicine)
     @Query("SELECT * FROM medicines_table WHERE medicineId = :medicineId")
-    fun getDrug(medicineId: Long): LiveData<Medicine>
+    fun getMedicine(medicineId: Long): Flow<Medicine>
     @Query("SELECT * FROM medicines_table ORDER BY medicineId ASC")
-    fun getAll(): LiveData<List<Medicine>>
+    fun getAll(): Flow<List<Medicine>>
 }
