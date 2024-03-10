@@ -24,3 +24,5 @@ data class Medicine(
     var medicineImage: String = "",
     @ColumnInfo(name = "description")
     var medicineDescription: String = "")
+
+class InvalidMedicineException(message: String): Exception(message)

@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.homemedicalkit.dataBase.MedicalKitDatabase
 import com.example.homemedicalkit.dataBase.MedicineRepository
 import com.example.homemedicalkit.dataBase.MedicineRepositoryImpl
+import com.example.homemedicalkit.dataBase.useCase.AddMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.DeleteMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
@@ -35,7 +36,9 @@ object AppModule {
     fun provideMedicineUseCases(repository: MedicineRepository):MedicineUseCases{
         return MedicineUseCases(
             getMedicines = GetMedicineUseCase(repository),
-            deleteMedicine = DeleteMedicineUseCase(repository)
+            deleteMedicine = DeleteMedicineUseCase(repository),
+            addMedicine = AddMedicineUseCase(repository)
+
         )
     }
 }
