@@ -19,7 +19,7 @@ data class Medicine(
     @ColumnInfo(name = "kit")
     var medicineKit: Long = 0,
     @ColumnInfo(name = "few")
-    var medicineNumberFew: Byte = 0,
+    var medicineNumberFew: Boolean = false,
     @ColumnInfo(name = "image")
     var medicineImage: String = "",
     @ColumnInfo(name = "description")

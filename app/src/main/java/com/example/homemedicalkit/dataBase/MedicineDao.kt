@@ -17,7 +17,7 @@ interface MedicineDao {
     @Delete
     suspend fun delete(medicine: Medicine)
     @Query("SELECT * FROM medicines_table WHERE medicineId = :medicineId")
-    fun getMedicine(medicineId: Long): Flow<Medicine>
+    fun getMedicine(medicineId: Long): Medicine?
     @Query("SELECT * FROM medicines_table ORDER BY medicineId ASC")
     fun getAll(): Flow<List<Medicine>>
 }

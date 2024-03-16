@@ -12,7 +12,7 @@ interface MedicineRepository {
 
     suspend fun delete(medicine: Medicine)
 
-    fun getMedicine(medicineId: Long): Flow<Medicine>
+    fun getMedicine(medicineId: Long): Medicine?
 
     fun getAll(): Flow<List<Medicine>>
 }
