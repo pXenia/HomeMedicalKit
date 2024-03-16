@@ -27,6 +27,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
@@ -44,6 +46,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,114 +58,59 @@ import com.example.homemedicalkit.ui.theme.DarkBlue
 import com.example.homemedicalkit.ui.theme.LightBlue1
 import com.example.homemedicalkit.ui.theme.LightBlue2
 import com.example.homemedicalkit.ui.theme.Orange80
-import com.example.homemedicalkit.ui.tools.CommonTools
+import com.example.homemedicalkit.ui.tools.DateTransformation
 
-class MedicineOneElement {
-    @Preview(showSystemUi = true)
-    @Composable
-    fun MedicineShow() {
+@Preview(showSystemUi = true)
+@Composable
+fun MedicineShow() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DarkBlue),
+    ) {
+
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(DarkBlue),
+                .fillMaxWidth()
+                .height(330.dp)
+                .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
+                .background(LightBlue1),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Column(
+            LargeFloatingActionButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(330.dp)
-                    .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
-                    .background(LightBlue1),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LargeFloatingActionButton(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .align(Alignment.End)
-                        .padding(5.dp)
-                        .border(
-                            width = 0.5.dp,
-                            shape = CircleShape,
-                            color = DarkBlue,
-                        ),
-                    containerColor = LightBlue1,
-                    onClick = { },
-                    shape = CircleShape
-                ) {
-                    Icon(Icons.Filled.Menu, "Menu")
-                }
-                Image(
-                    bitmap = ImageBitmap.imageResource(R.drawable.test_medicine),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(20.dp)
-                        .size(300.dp, 200.dp)
-                        .clip(
-                            RoundedCornerShape(30.dp)
-                        ),
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Spacer(modifier = Modifier.padding(20.dp))
-            MedicinesListOneKit().TextFieldCast()
-            Spacer(modifier = Modifier.padding(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically) {
-                CommonTools().DateTimeField()
-                CommonTools().CheckBoxCast()
-                Text(
-                    text = "Осталось мало",
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 18.sp,
-                        color = LightBlue2
+                    .size(50.dp)
+                    .align(Alignment.End)
+                    .padding(5.dp)
+                    .border(
+                        width = 0.5.dp,
+                        shape = CircleShape,
+                        color = DarkBlue,
                     ),
-                )
-            }
-            Spacer(modifier = Modifier.padding(8.dp))
-            LazyRow(
-                modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp)
+                containerColor = LightBlue1,
+                onClick = { },
+                shape = CircleShape
             ) {
-                items(10) {
-                    TagElement()
-                    Spacer(modifier = Modifier.padding(5.dp))
-                }
+                Icon(Icons.Filled.Menu, "Menu")
             }
-            Spacer(modifier = Modifier.padding(8.dp))
-            DescriptionMedicine()
+            Image(
+                bitmap = ImageBitmap.imageResource(R.drawable.test_medicine),
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(20.dp)
+                    .size(300.dp, 200.dp)
+                    .clip(
+                        RoundedCornerShape(30.dp)
+                    ),
+                contentScale = ContentScale.Crop
+            )
         }
-
-    }
-
-    @Composable
-    fun TagElement() {
-        Card(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ),
-            colors = CardDefaults.cardColors(
-                containerColor = Orange80
-            ),
-            modifier = Modifier
-                .height(35.dp)
-                .clip(RoundedCornerShape(30.dp)),
-        ){
-            Row(Modifier.padding(7.dp)){
-                Icon(Icons.Filled.KeyboardArrowRight, contentDescription ="" )
-                Spacer(modifier = Modifier.padding(2.dp))
-                Text("Жаропониж")
-                Spacer(modifier = Modifier.padding(2.dp))
-            }
-        }
-    }
-    @Composable
-    fun DescriptionMedicine(){
-        var textInp = remember { mutableStateOf("Описание ...") }
+        Spacer(modifier = Modifier.padding(20.dp))
+        var textInp = remember { mutableStateOf("") }
         BasicTextField(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxWidth()
+                .height(50.dp),
             value = textInp.value,
             onValueChange = {
                 textInp.value = it
@@ -174,17 +122,136 @@ class MedicineOneElement {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp)
-                        .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+                        .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+                        .clip(RoundedCornerShape(20.dp))
                         .background(LightBlue1)
-
                 ) {
-                    Box(modifier = Modifier.padding(10.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                Icons.Outlined.Search,
+                                contentDescription = "",
+                            )
+                        }
+                        Spacer(modifier = Modifier.padding(5.dp))
                         innerTextField.invoke()
                     }
                 }
             }
         )
+        Spacer(modifier = Modifier.padding(8.dp))
+        Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically) {
+            DateTimeField()
+            CheckBoxCast()
+            Text(
+                text = "Осталось мало",
+                style = TextStyle(
+                    fontFamily = Comfortaa,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 18.sp,
+                    color = LightBlue2
+                ),
+            )
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        LazyRow(
+            modifier = Modifier
+                .padding(start = 20.dp, end = 20.dp)
+        ) {
+            items(10) {
+                TagElement()
+                Spacer(modifier = Modifier.padding(5.dp))
+            }
+        }
+        Spacer(modifier = Modifier.padding(8.dp))
+        DescriptionMedicine()
     }
 
 }
+
+@Composable
+fun TagElement() {
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = Orange80
+        ),
+        modifier = Modifier
+            .height(35.dp)
+            .clip(RoundedCornerShape(30.dp)),
+    ){
+        Row(Modifier.padding(7.dp)){
+            Icon(Icons.Filled.KeyboardArrowRight, contentDescription ="" )
+            Spacer(modifier = Modifier.padding(2.dp))
+            Text("Жаропониж")
+            Spacer(modifier = Modifier.padding(2.dp))
+        }
+    }
+}
+@Composable
+fun DescriptionMedicine() {
+    var textInp = remember { mutableStateOf("Описание ...") }
+    BasicTextField(
+        modifier = Modifier
+            .fillMaxSize(),
+        value = textInp.value,
+        onValueChange = {
+            textInp.value = it
+        },
+        textStyle = TextStyle(
+            fontSize = 15.sp
+        ),
+        decorationBox = { innerTextField ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                    .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+                    .background(LightBlue1)
+
+            ) {
+                Box(modifier = Modifier.padding(10.dp)) {
+                    innerTextField.invoke()
+                }
+            }
+        }
+    )
+}
+@Composable
+fun DateTimeField(){
+    val text = remember {
+        mutableStateOf("01022010")
+    }
+    Box(modifier = Modifier
+        .height(50.dp)
+        .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+        .clip(RoundedCornerShape(20.dp))
+        .background(LightBlue1)){
+        BasicTextField(
+            modifier = Modifier.padding(10.dp),
+            textStyle = TextStyle(textAlign = TextAlign.Center),
+            value = text.value,
+            onValueChange = {text.value = it},
+            visualTransformation = DateTransformation(),
+            singleLine = true)
+    }
+}
+@Composable
+fun CheckBoxCast() {
+    val checkedState = remember { mutableStateOf(true) }
+    Checkbox(
+        checked = checkedState.value,
+        onCheckedChange = { checkedState.value = it },
+        colors = CheckboxDefaults.colors(checkedColor = LightBlue2, checkmarkColor = DarkBlue)
+    )
+}
+
+
