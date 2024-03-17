@@ -8,6 +8,7 @@ import com.example.homemedicalkit.dataBase.MedicineRepositoryImpl
 import com.example.homemedicalkit.dataBase.useCase.AddMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.DeleteMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetMedicineUseCase
+import com.example.homemedicalkit.dataBase.useCase.GetMedicinesUseCase
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
 import dagger.Module
 import dagger.Provides
@@ -35,9 +36,10 @@ object AppModule {
     @Provides
     fun provideMedicineUseCases(repository: MedicineRepository):MedicineUseCases{
         return MedicineUseCases(
-            getMedicines = GetMedicineUseCase(repository),
+            getMedicines = GetMedicinesUseCase(repository),
             deleteMedicine = DeleteMedicineUseCase(repository),
-            addMedicine = AddMedicineUseCase(repository)
+            addMedicine = AddMedicineUseCase(repository),
+            getMedicine = GetMedicineUseCase(repository)
 
         )
     }

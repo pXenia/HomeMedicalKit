@@ -11,11 +11,11 @@ import com.example.homemedicalkit.ui.theme.Yellow80
 @Entity(tableName = "medicines_table")
 data class Medicine(
     @PrimaryKey(autoGenerate = true)
-    var medicineId: Long = 0L,
+    var medicineId: Long? = 0L,
     @ColumnInfo(name = "name")
     var medicineName: String = "",
     @ColumnInfo(name = "date")
-    var medicineDate: Long = 0,
+    var medicineDate: String = "",
     @ColumnInfo(name = "kit")
     var medicineKit: Long = 0,
     @ColumnInfo(name = "few")
