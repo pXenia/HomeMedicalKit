@@ -18,8 +18,8 @@ class MedicineRepositoryImpl(
         return dao.delete(medicine)
     }
 
-    override fun getMedicine(medicineId: Long): Flow<Medicine> {
-        return dao.getMedicine(medicineId)
+    override fun getMedicine(medicineId: Long): Medicine? {
+        return dao.getMedicine (medicineId)
     }
 
     override fun getAll(): Flow<List<Medicine>> {

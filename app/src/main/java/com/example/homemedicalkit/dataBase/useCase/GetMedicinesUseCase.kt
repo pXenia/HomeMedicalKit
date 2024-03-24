@@ -25,9 +25,9 @@ class GetMedicinesUseCase(
                 }
                 is OrderType.Descending ->{
                     when(medicineOrder) {
-                        is MedicineOrder.Name -> medicines.sortedBy { it.medicineName.lowercase() }
-                        is MedicineOrder.Date -> medicines.sortedBy { it.medicineDate}
-                        is MedicineOrder.Color -> medicines.sortedBy { it.medicineNumberFew}
+                        is MedicineOrder.Name -> medicines.sortedByDescending { it.medicineName.lowercase() }
+                        is MedicineOrder.Date -> medicines.sortedByDescending { it.medicineDate}
+                        is MedicineOrder.Color -> medicines.sortedByDescending { it.medicineNumberFew}
                     }
                 }
             }

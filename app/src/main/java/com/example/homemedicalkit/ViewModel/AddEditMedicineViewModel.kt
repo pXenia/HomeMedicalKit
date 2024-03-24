@@ -31,8 +31,8 @@ class AddEditMedicineViewModel @Inject constructor(
     ))
     val medicineDate: State<MedicineTextFieldStates> = _medicineDate
 
-    private val _medicineFew = mutableStateOf(MedicineTextFieldStates())
-    val medicineFew: State<MedicineTextFieldStates> = _medicineFew
+    private val _medicineFew = mutableStateOf(false)
+    val medicineFew: State<Boolean> = _medicineFew
 
     private val _medicineTags = mutableStateOf(MedicineTextFieldStates())
     val medicineTags: State<MedicineTextFieldStates> = _medicineTags
@@ -44,6 +44,7 @@ class AddEditMedicineViewModel @Inject constructor(
         hint = "Описание ..."
     ))
     val medicineDescription: State<MedicineTextFieldStates> = _medicineDescription
+
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -108,6 +109,9 @@ class AddEditMedicineViewModel @Inject constructor(
                             medicineDate.value.text.isBlank()
                 )
             }
+            is AddEditMedicineEvent.EnteredMedicineFew -> {
+                _medicineFew.value = !medicineFew.value
+            }
             is AddEditMedicineEvent.SaveMedicine ->{
                 viewModelScope.launch {
                     try{
@@ -117,7 +121,7 @@ class AddEditMedicineViewModel @Inject constructor(
                                 medicineDate = medicineDate.value.text,
                                 medicineDescription = medicineDescription.value.text,
                                 medicineKit = 1,
-                                medicineNumberFew = false,
+                                medicineNumberFew = medicineFew.value,
                                 medicineImage = medicineImage.value.text,
                                 medicineId = currentMedicineId
                             )
@@ -134,6 +138,7 @@ class AddEditMedicineViewModel @Inject constructor(
                     }
                 }
             }
+
         }
     }
 

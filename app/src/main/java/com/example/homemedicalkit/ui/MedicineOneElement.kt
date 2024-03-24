@@ -1,11 +1,8 @@
 package com.example.homemedicalkit.ui
 
-import android.media.audiofx.AudioEffect.Descriptor
-import android.widget.CalendarView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,12 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
@@ -33,26 +28,24 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.dataBase.Medicine
+import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
+import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlue
 import com.example.homemedicalkit.ui.theme.LightBlue1
@@ -60,9 +53,12 @@ import com.example.homemedicalkit.ui.theme.LightBlue2
 import com.example.homemedicalkit.ui.theme.Orange80
 import com.example.homemedicalkit.ui.tools.DateTransformation
 
-@Preview(showSystemUi = true)
+//@Preview(showSystemUi = true)
 @Composable
-fun MedicineShow() {
+fun MedicineShow(
+    viewModel: AddEditMedicineViewModel = viewModel()
+) {
+    val medicineNameState = viewModel.medicineName.value
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -111,9 +107,9 @@ fun MedicineShow() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            value = textInp.value,
+            value = medicineNameState.text,
             onValueChange = {
-                textInp.value = it
+                viewModel.onEvent(AddEditMedicineEvent.EnteredName(it))
             },
             textStyle = TextStyle(
                 fontSize = 15.sp
@@ -197,14 +193,14 @@ fun TagElement() {
     }
 }
 @Composable
-fun DescriptionMedicine() {
-    var textInp = remember { mutableStateOf("Описание ...") }
+fun DescriptionMedicine(viewModel: AddEditMedicineViewModel = viewModel()) {
+    val medicineDescriptionState = viewModel.medicineDescription.value
     BasicTextField(
         modifier = Modifier
             .fillMaxSize(),
-        value = textInp.value,
+        value = medicineDescriptionState.text,
         onValueChange = {
-            textInp.value = it
+            viewModel.onEvent(AddEditMedicineEvent.EnteredDescription(it))
         },
         textStyle = TextStyle(
             fontSize = 15.sp
@@ -226,10 +222,10 @@ fun DescriptionMedicine() {
     )
 }
 @Composable
-fun DateTimeField(){
-    val text = remember {
-        mutableStateOf("01022010")
-    }
+fun DateTimeField(
+    viewModel: AddEditMedicineViewModel = viewModel()
+){
+    val medicineDateState = viewModel.medicineDate.value
     Box(modifier = Modifier
         .height(50.dp)
         .padding(top = 10.dp, start = 20.dp, end = 20.dp)
@@ -238,18 +234,23 @@ fun DateTimeField(){
         BasicTextField(
             modifier = Modifier.padding(10.dp),
             textStyle = TextStyle(textAlign = TextAlign.Center),
-            value = text.value,
-            onValueChange = {text.value = it},
+            value = medicineDateState.text,
+            onValueChange = {
+                            viewModel.onEvent(AddEditMedicineEvent.EnteredDate(it))
+            },
             visualTransformation = DateTransformation(),
             singleLine = true)
     }
 }
 @Composable
-fun CheckBoxCast() {
-    val checkedState = remember { mutableStateOf(true) }
+fun CheckBoxCast(viewModel: AddEditMedicineViewModel = viewModel()
+){
+    val medicineCheckBoxState = viewModel.medicineFew.value
     Checkbox(
-        checked = checkedState.value,
-        onCheckedChange = { checkedState.value = it },
+        checked = medicineCheckBoxState,
+        onCheckedChange = {
+            viewModel.onEvent(AddEditMedicineEvent.EnteredMedicineFew(it))
+        },
         colors = CheckboxDefaults.colors(checkedColor = LightBlue2, checkmarkColor = DarkBlue)
     )
 }
