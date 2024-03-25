@@ -25,7 +25,7 @@ class AddEditMedicineViewModel @Inject constructor(
     val medicineName: State<MedicineTextFieldStates> = _medicineName
 
     private val _medicineDate = mutableStateOf(MedicineTextFieldStates(
-        hint = "01.01.2030"
+        hint = "01.01.2070"
     ))
     val medicineDate: State<MedicineTextFieldStates> = _medicineDate
 
@@ -39,7 +39,7 @@ class AddEditMedicineViewModel @Inject constructor(
     val medicineImage: State<MedicineTextFieldStates> = _medicineImage
 
     private val _medicineDescription = mutableStateOf(MedicineTextFieldStates(
-        hint = "Описание ..."
+        hint = "Описание "
     ))
     val medicineDescription: State<MedicineTextFieldStates> = _medicineDescription
 

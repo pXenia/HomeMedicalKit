@@ -29,8 +29,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,7 +56,7 @@ import com.example.homemedicalkit.ui.tools.DateTransformation
 fun MedicineShow(
     viewModel: AddEditMedicineViewModel = hiltViewModel()
 ) {
-    val titleState = viewModel.medicineName.value
+    val nameState = viewModel.medicineName.value
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -102,12 +100,11 @@ fun MedicineShow(
             )
         }
         Spacer(modifier = Modifier.padding(20.dp))
-        var textInp = titleState.hint
         BasicTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            value = textInp,
+            value = nameState.text,
             onValueChange = {
                 viewModel.onEvent(AddEditMedicineEvent.EnteredName(it))
             },
@@ -193,14 +190,15 @@ fun TagElement() {
     }
 }
 @Composable
-fun DescriptionMedicine() {
-    var textInp = remember { mutableStateOf("Описание ...") }
+fun DescriptionMedicine(viewModel: AddEditMedicineViewModel = hiltViewModel()
+) {
+    val descriptionState = viewModel.medicineDescription.value
     BasicTextField(
         modifier = Modifier
             .fillMaxSize(),
-        value = textInp.value,
+        value = descriptionState.text,
         onValueChange = {
-            textInp.value = it
+            viewModel.onEvent(AddEditMedicineEvent.EnteredDescription(it))
         },
         textStyle = TextStyle(
             fontSize = 15.sp
@@ -222,10 +220,10 @@ fun DescriptionMedicine() {
     )
 }
 @Composable
-fun DateTimeField(){
-    val text = remember {
-        mutableStateOf("01022010")
-    }
+fun DateTimeField(viewModel: AddEditMedicineViewModel = hiltViewModel()
+) {
+    val dataState = viewModel.medicineDate.value
+
     Box(modifier = Modifier
         .height(50.dp)
         .padding(top = 10.dp, start = 20.dp, end = 20.dp)
@@ -234,18 +232,19 @@ fun DateTimeField(){
         BasicTextField(
             modifier = Modifier.padding(10.dp),
             textStyle = TextStyle(textAlign = TextAlign.Center),
-            value = text.value,
-            onValueChange = {text.value = it},
+            value = dataState.text,
+            onValueChange = {viewModel.onEvent(AddEditMedicineEvent.EnteredDate(it))},
             visualTransformation = DateTransformation(),
             singleLine = true)
     }
 }
 @Composable
-fun CheckBoxCast() {
-    val checkedState = remember { mutableStateOf(true) }
+fun CheckBoxCast(viewModel: AddEditMedicineViewModel = hiltViewModel()
+) {
+    val fewState = viewModel.medicineFew.value
     Checkbox(
-        checked = checkedState.value,
-        onCheckedChange = { checkedState.value = it },
+        checked = fewState,
+        onCheckedChange = { viewModel.onEvent(AddEditMedicineEvent.EnteredMedicineFew(it)) },
         colors = CheckboxDefaults.colors(checkedColor = LightBlue2, checkmarkColor = DarkBlue)
     )
 }
