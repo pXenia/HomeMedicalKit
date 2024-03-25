@@ -8,12 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.homemedicalkit.dataBase.InvalidMedicineException
 import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
-import dagger.hilt.android.internal.lifecycle.HiltViewModelMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +20,7 @@ class AddEditMedicineViewModel @Inject constructor(
     savedStateHandler: SavedStateHandle
 ): ViewModel() {
     private val _medicineName = mutableStateOf(MedicineTextFieldStates(
-        hint = "Название ..."
+        hint = "Название"
     ))
     val medicineName: State<MedicineTextFieldStates> = _medicineName
 
