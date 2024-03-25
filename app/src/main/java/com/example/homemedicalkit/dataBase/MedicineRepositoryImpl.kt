@@ -1,6 +1,5 @@
 package com.example.homemedicalkit.dataBase
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 
 class MedicineRepositoryImpl(
@@ -18,7 +17,7 @@ class MedicineRepositoryImpl(
         return dao.delete(medicine)
     }
 
-    override fun getMedicine(medicineId: Long): Flow<Medicine> {
+    override fun getMedicine(medicineId: Long): Medicine? {
         return dao.getMedicine(medicineId)
     }
 
