@@ -21,8 +21,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
@@ -42,17 +40,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.homemedicalkit.R
+import com.example.homemedicalkit.ViewModel.MedicalKitViewModel
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlue
 import com.example.homemedicalkit.ui.theme.LightBlue1
 import com.example.homemedicalkit.ui.theme.LightBlue2
-import com.example.homemedicalkit.ui.tools.DateTransformation
 
 
 @Preview(showSystemUi = true)
 @Composable
-fun MedicineListElements(medKitName: String = "Моя аптечка") {
+fun MedicineListElements(medKitName: String = "Моя аптечка",
+                         viewModel: MedicalKitViewModel = hiltViewModel()){
+    val state = viewModel.state.value
     Column(
         modifier = Modifier
             .fillMaxSize()
