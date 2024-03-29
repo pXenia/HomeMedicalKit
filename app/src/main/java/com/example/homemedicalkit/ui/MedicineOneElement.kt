@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
 import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
@@ -54,6 +55,7 @@ import com.example.homemedicalkit.ui.tools.DateTransformation
 
 @Composable
 fun MedicineShow(
+    navController: NavController,
     viewModel: AddEditMedicineViewModel = hiltViewModel()
 ) {
     val nameState = viewModel.medicineName.value

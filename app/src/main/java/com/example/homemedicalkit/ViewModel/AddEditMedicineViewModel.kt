@@ -47,10 +47,10 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentMedicineId: Long? = null
+    private var currentMedicineId: Int? = null
     init {
-        savedStateHandler.get<Long>("medicineId")?.let{ medicineId ->
-            if (medicineId != -1L){
+        savedStateHandler.get<Int>("medicineId")?.let{ medicineId ->
+            if (medicineId != -1){
                 viewModelScope.launch {
                     medicineUseCases.getMedicine(medicineId)?.also {  medicine ->
                         currentMedicineId = medicine.medicineId

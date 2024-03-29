@@ -17,7 +17,7 @@ class MedicineRepositoryImpl(
         return dao.delete(medicine)
     }
 
-    override fun getMedicine(medicineId: Long): Medicine? {
+    override fun getMedicine(medicineId: Int?): Medicine? {
         return dao.getMedicine(medicineId)
     }
 

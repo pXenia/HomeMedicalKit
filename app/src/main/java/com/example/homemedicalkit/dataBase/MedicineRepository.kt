@@ -1,6 +1,5 @@
 package com.example.homemedicalkit.dataBase
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 
 
@@ -12,7 +11,7 @@ interface MedicineRepository {
 
     suspend fun delete(medicine: Medicine)
 
-    fun getMedicine(medicineId: Long): Medicine?
+    fun getMedicine(medicineId: Int?): Medicine?
 
     fun getAll(): Flow<List<Medicine>>
 }

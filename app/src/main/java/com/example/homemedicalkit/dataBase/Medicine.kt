@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "medicines_table")
 data class Medicine(
     @PrimaryKey(autoGenerate = true)
-    var medicineId: Long? = 0L,
+    var medicineId: Int? = null,
     @ColumnInfo(name = "name")
     var medicineName: String = "",
     @ColumnInfo(name = "date")
