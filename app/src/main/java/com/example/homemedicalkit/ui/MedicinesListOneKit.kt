@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ViewModel.MedicalKitViewModel
+import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlue
 import com.example.homemedicalkit.ui.theme.LightBlue1
@@ -51,8 +52,7 @@ import com.example.homemedicalkit.ui.theme.LightBlue2
 
 @Preview(showSystemUi = true)
 @Composable
-fun MedicineListElements(medKitName: String = "Моя аптечка",
-                         viewModel: MedicalKitViewModel = hiltViewModel()){
+fun MedicineListElements(medKitName: String = "Моя аптечка", viewModel: MedicalKitViewModel = hiltViewModel()) {
     val state = viewModel.state.value
     Column(
         modifier = Modifier
@@ -64,13 +64,11 @@ fun MedicineListElements(medKitName: String = "Моя аптечка",
             modifier = Modifier
                 .padding(10.dp)
         ) {
-            items(10) {
-                MedicineElementCast()
-                Spacer(modifier = Modifier.padding(5.dp))
+            items(state.medicines.size) { medicine ->
+                MedicineElementCast(state.medicines[medicine])
             }
         }
     }
-
 }
 
 @Composable
@@ -152,7 +150,7 @@ fun TextFieldCast() {
 }
 
 @Composable
-fun MedicineElementCast() {
+fun MedicineElementCast(medicine: Medicine) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -182,7 +180,7 @@ fun MedicineElementCast() {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Название лекарства",
+                    text = medicine.medicineName,
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontFamily = Comfortaa,
@@ -190,7 +188,7 @@ fun MedicineElementCast() {
                     )
                 )
                 Text(
-                    text = "20.02.2024",
+                    text = medicine.medicineDate,
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontFamily = Comfortaa
