@@ -28,11 +28,10 @@ class MainActivity : ComponentActivity() {
                     MedicineListElements(navController = navController)
                 }
                 composable(
-                    route = Screen.AddEditMedicineScreen.route +
-                            "?noteId={noteId}",
+                    route = Screen.AddEditMedicineScreen.route + "?medicineId={medicineId}",
                     arguments = listOf(
                         navArgument(
-                            name = "noteId"
+                            name = "medicineId"
                         ) {
                             type = NavType.IntType
                             defaultValue = -1

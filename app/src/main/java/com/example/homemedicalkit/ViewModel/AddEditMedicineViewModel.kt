@@ -49,7 +49,7 @@ class AddEditMedicineViewModel @Inject constructor(
 
     private var currentMedicineId: Int? = null
     init {
-        savedStateHandler.get<Int>("medicineId")?.let{ medicineId ->
+        savedStateHandler.get<Int?>("medicineId")?.let{ medicineId ->
             if (medicineId != -1){
                 viewModelScope.launch {
                     medicineUseCases.getMedicine(medicineId)?.also {  medicine ->
@@ -66,7 +66,7 @@ class AddEditMedicineViewModel @Inject constructor(
                             text = medicine.medicineDescription,
                             isHintVisible = false
                         )
-
+                        _medicineFew.value = medicine.medicineNumberFew
                     }
                 }
             }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -88,8 +89,13 @@ fun MedicineListElements(medKitName: String = "Моя аптечка",
                     modifier = Modifier
                         .padding(10.dp)
                 ) {
-                    items(state.medicines.size) { medicine ->
-                        MedicineElementCast(state.medicines[medicine], navController)
+                    items(state.medicines){
+                        medicine ->
+                        MedicineElementCast(medicine = medicine, modifier = Modifier.clickable {
+                            navController.navigate(
+                                Screen.AddEditMedicineScreen.route + "?medicineId=${medicine.medicineId}"
+                            )
+                        })
                     }
                 }
 
@@ -178,7 +184,7 @@ fun TextFieldCast() {
 
 @Composable
 fun MedicineElementCast(medicine: Medicine,
-                        navController: NavController) {
+                        modifier: Modifier) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -186,13 +192,10 @@ fun MedicineElementCast(medicine: Medicine,
         colors = CardDefaults.cardColors(
             containerColor = LightBlue2
         ),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .clip(RoundedCornerShape(30.dp))
-            .clickable { navController.navigate(
-                Screen.AddEditMedicineScreen.route +
-                        "?noteId=${medicine.medicineId}") },
+            .clip(RoundedCornerShape(30.dp)),
     ) {
         Row {
             Image(

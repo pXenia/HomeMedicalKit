@@ -1,5 +1,6 @@
 package com.example.homemedicalkit.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Search
@@ -24,9 +26,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,121 +57,143 @@ import com.example.homemedicalkit.ui.theme.LightBlue2
 import com.example.homemedicalkit.ui.theme.Orange80
 import com.example.homemedicalkit.ui.tools.DateTransformation
 
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MedicineShow(
     navController: NavController,
     viewModel: AddEditMedicineViewModel = hiltViewModel()
 ) {
     val nameState = viewModel.medicineName.value
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(DarkBlue),
-    ) {
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(330.dp)
-                .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
-                .background(LightBlue1),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            LargeFloatingActionButton(
+    Scaffold (
+        floatingActionButton = {
+            FloatingActionButton(
                 modifier = Modifier
-                    .size(50.dp)
-                    .align(Alignment.End)
-                    .padding(5.dp)
-                    .border(
-                        width = 0.5.dp,
-                        shape = CircleShape,
-                        color = DarkBlue,
-                    ),
-                containerColor = LightBlue1,
-                onClick = { },
+                    .size(70.dp)
+                    .padding(5.dp),
+                containerColor = DarkBlue,
+                contentColor = LightBlue1,
+                onClick = {
+                    viewModel.onEvent(AddEditMedicineEvent.SaveMedicine)
+                    navController.navigateUp()},
                 shape = CircleShape
             ) {
-                Icon(Icons.Filled.Menu, "Menu")
+                Icon(Icons.Filled.Check, "Add")
             }
-            Image(
-                bitmap = ImageBitmap.imageResource(R.drawable.test_medicine),
-                contentDescription = "",
+        },
+        content = {
+            Column(
                 modifier = Modifier
-                    .padding(20.dp)
-                    .size(300.dp, 200.dp)
-                    .clip(
-                        RoundedCornerShape(30.dp)
-                    ),
-                contentScale = ContentScale.Crop
-            )
-        }
-        Spacer(modifier = Modifier.padding(20.dp))
-        BasicTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            value = nameState.text,
-            onValueChange = {
-                viewModel.onEvent(AddEditMedicineEvent.EnteredName(it))
-            },
-            textStyle = TextStyle(
-                fontSize = 15.sp
-            ),
-            decorationBox = { innerTextField ->
-                Box(
+                    .fillMaxSize()
+                    .background(DarkBlue),
+            ) {
+
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 10.dp, start = 20.dp, end = 20.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(LightBlue1)
+                        .height(330.dp)
+                        .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
+                        .background(LightBlue1),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row(
+                    LargeFloatingActionButton(
                         modifier = Modifier
+                            .size(50.dp)
+                            .align(Alignment.End)
                             .padding(5.dp)
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                            .border(
+                                width = 0.5.dp,
+                                shape = CircleShape,
+                                color = DarkBlue,
+                            ),
+                        containerColor = LightBlue1,
+                        onClick = { },
+                        shape = CircleShape
                     ) {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                Icons.Outlined.Search,
-                                contentDescription = "",
-                            )
+                        Icon(Icons.Filled.Menu, "Menu")
+                    }
+                    Image(
+                        bitmap = ImageBitmap.imageResource(R.drawable.test_medicine),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .size(300.dp, 200.dp)
+                            .clip(
+                                RoundedCornerShape(30.dp)
+                            ),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                Spacer(modifier = Modifier.padding(20.dp))
+                BasicTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    value = nameState.text,
+                    onValueChange = {
+                        viewModel.onEvent(AddEditMedicineEvent.EnteredName(it))
+                    },
+                    textStyle = TextStyle(
+                        fontSize = 15.sp
+                    ),
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(LightBlue1)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                IconButton(onClick = { /*TODO*/ }) {
+                                    Icon(
+                                        Icons.Outlined.Search,
+                                        contentDescription = "",
+                                    )
+                                }
+                                Spacer(modifier = Modifier.padding(5.dp))
+                                innerTextField.invoke()
+                            }
                         }
+                    }
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    DateTimeField(viewModel)
+                    CheckBoxCast(viewModel)
+                    Text(
+                        text = "Осталось мало",
+                        style = TextStyle(
+                            fontFamily = Comfortaa,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 18.sp,
+                            color = LightBlue2
+                        ),
+                    )
+                }
+                Spacer(modifier = Modifier.padding(8.dp))
+                LazyRow(
+                    modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                ) {
+                    items(10) {
+                        TagElement()
                         Spacer(modifier = Modifier.padding(5.dp))
-                        innerTextField.invoke()
                     }
                 }
-            }
-        )
-        Spacer(modifier = Modifier.padding(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) {
-            DateTimeField()
-            CheckBoxCast()
-            Text(
-                text = "Осталось мало",
-                style = TextStyle(
-                    fontFamily = Comfortaa,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 18.sp,
-                    color = LightBlue2
-                ),
-            )
-        }
-        Spacer(modifier = Modifier.padding(8.dp))
-        LazyRow(
-            modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp)
-        ) {
-            items(10) {
-                TagElement()
-                Spacer(modifier = Modifier.padding(5.dp))
+                Spacer(modifier = Modifier.padding(8.dp))
+                DescriptionMedicine(viewModel)
             }
         }
-        Spacer(modifier = Modifier.padding(8.dp))
-        DescriptionMedicine()
-    }
+    )
 
 }
 
@@ -192,7 +219,7 @@ fun TagElement() {
     }
 }
 @Composable
-fun DescriptionMedicine(viewModel: AddEditMedicineViewModel = hiltViewModel()
+fun DescriptionMedicine(viewModel: AddEditMedicineViewModel
 ) {
     val descriptionState = viewModel.medicineDescription.value
     BasicTextField(
@@ -222,8 +249,7 @@ fun DescriptionMedicine(viewModel: AddEditMedicineViewModel = hiltViewModel()
     )
 }
 @Composable
-fun DateTimeField(viewModel: AddEditMedicineViewModel = hiltViewModel()
-) {
+fun DateTimeField(viewModel: AddEditMedicineViewModel) {
     val dataState = viewModel.medicineDate.value
 
     Box(modifier = Modifier
@@ -241,8 +267,7 @@ fun DateTimeField(viewModel: AddEditMedicineViewModel = hiltViewModel()
     }
 }
 @Composable
-fun CheckBoxCast(viewModel: AddEditMedicineViewModel = hiltViewModel()
-) {
+fun CheckBoxCast(viewModel: AddEditMedicineViewModel) {
     val fewState = viewModel.medicineFew.value
     Checkbox(
         checked = fewState,

@@ -11,7 +11,7 @@ interface MedicineRepository {
 
     suspend fun delete(medicine: Medicine)
 
-    fun getMedicine(medicineId: Int?): Medicine?
+    suspend fun getMedicine(medicineId: Int?): Medicine?
 
     fun getAll(): Flow<List<Medicine>>
 }
