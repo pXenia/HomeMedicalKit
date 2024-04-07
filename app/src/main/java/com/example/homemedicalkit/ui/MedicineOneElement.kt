@@ -1,9 +1,16 @@
 package com.example.homemedicalkit.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,19 +41,24 @@ import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
 import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
@@ -56,6 +68,7 @@ import com.example.homemedicalkit.ui.theme.LightBlue1
 import com.example.homemedicalkit.ui.theme.LightBlue2
 import com.example.homemedicalkit.ui.theme.Orange80
 import com.example.homemedicalkit.ui.tools.DateTransformation
+import java.io.File
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +77,31 @@ fun MedicineShow(
     navController: NavController,
     viewModel: AddEditMedicineViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    var hasImage = remember {
+        mutableStateOf(false)
+    }
+    var imageUri = remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            hasImage.value = success
+        }
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()) {
+        if (it) {
+            val uri = ComposeFileProvider.getImageUri(context)
+            imageUri.value = uri
+            cameraLauncher.launch(imageUri.value)
+        }
+        else{}
+    }
+
     val nameState = viewModel.medicineName.value
     Scaffold (
         floatingActionButton = {
@@ -107,20 +145,35 @@ fun MedicineShow(
                                 color = DarkBlue,
                             ),
                         containerColor = LightBlue1,
-                        onClick = { },
+                        onClick = {
+
+                        },
                         shape = CircleShape
                     ) {
                         Icon(Icons.Filled.Menu, "Menu")
                     }
                     Image(
-                        bitmap = ImageBitmap.imageResource(R.drawable.test_medicine),
+                        painter = if (hasImage.value && imageUri.value != null)
+                            rememberAsyncImagePainter(
+                                model = imageUri.value) else painterResource(id = R.drawable.test_medicine),
                         contentDescription = "",
                         modifier = Modifier
                             .padding(20.dp)
                             .size(300.dp, 200.dp)
                             .clip(
                                 RoundedCornerShape(30.dp)
-                            ),
+                            )
+                            .clickable {
+                                val permissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                                if (permissionResult == PackageManager.PERMISSION_GRANTED) {
+                                    val uri = ComposeFileProvider.getImageUri(context)
+                                    imageUri.value = uri
+                                    cameraLauncher.launch(uri)
+                                }
+                                else{
+                                    permissionLauncher.launch(Manifest.permission.CAMERA)
+                                }
+                            },
                         contentScale = ContentScale.Crop
                     )
                 }
@@ -276,4 +329,24 @@ fun CheckBoxCast(viewModel: AddEditMedicineViewModel) {
     )
 }
 
-
+class ComposeFileProvider : FileProvider(
+    R.xml.files
+) {
+    companion object {
+        fun getImageUri(context: Context): Uri {
+            val directory = File(context.cacheDir, "images")
+            directory.mkdirs()
+            val file = File.createTempFile(
+                "JPEG_${System.currentTimeMillis()}",
+                ".jpg",
+                directory,
+            )
+            val authority = context.packageName + ".fileprovider"
+            return getUriForFile(
+                context,
+                authority,
+                file,
+            )
+        }
+    }
+}

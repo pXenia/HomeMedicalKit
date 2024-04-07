@@ -9,6 +9,7 @@ sealed class AddEditMedicineEvent {
     data class EnteredMedicineFew(val value: Boolean): AddEditMedicineEvent()
     data class ChangeFocusDate(val focusState: FocusState): AddEditMedicineEvent()
     data class EnteredDescription(val value: String): AddEditMedicineEvent()
+    data class EnteredImage(val value: String): AddEditMedicineEvent()
 
     data class ChangeFocusDescription(val focusState: FocusState): AddEditMedicineEvent()
     object SaveMedicine: AddEditMedicineEvent()

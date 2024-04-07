@@ -35,8 +35,8 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineTags = mutableStateOf(MedicineTextFieldStates())
     val medicineTags: State<MedicineTextFieldStates> = _medicineTags
 
-    private val _medicineImage = mutableStateOf(MedicineTextFieldStates())
-    val medicineImage: State<MedicineTextFieldStates> = _medicineImage
+    private val _medicineImage = mutableStateOf("")
+    val medicineImage: State<String> = _medicineImage
 
     private val _medicineDescription = mutableStateOf(MedicineTextFieldStates(
         hint = "Описание "
@@ -67,6 +67,7 @@ class AddEditMedicineViewModel @Inject constructor(
                             isHintVisible = false
                         )
                         _medicineFew.value = medicine.medicineNumberFew
+                        _medicineImage.value=medicine.medicineImage
                     }
                 }
             }
@@ -110,6 +111,9 @@ class AddEditMedicineViewModel @Inject constructor(
             is AddEditMedicineEvent.EnteredMedicineFew -> {
                 _medicineFew.value = !medicineFew.value
             }
+            is AddEditMedicineEvent.EnteredImage -> {
+                _medicineImage.value = medicineImage.value
+            }
             is AddEditMedicineEvent.SaveMedicine ->{
                 viewModelScope.launch {
                     try{
@@ -120,7 +124,7 @@ class AddEditMedicineViewModel @Inject constructor(
                                 medicineDescription = medicineDescription.value.text,
                                 medicineKit = 1,
                                 medicineNumberFew = medicineFew.value,
-                                medicineImage = medicineImage.value.text,
+                                medicineImage = medicineImage.value,
                                 medicineId = currentMedicineId
                             )
                         )
