@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -38,16 +39,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ViewModel.MedicalKitViewModel
 import com.example.homemedicalkit.dataBase.Medicine
@@ -96,6 +99,7 @@ fun MedicineListElements(medKitName: String = "Моя аптечка",
                                 Screen.AddEditMedicineScreen.route + "?medicineId=${medicine.medicineId}"
                             )
                         })
+                        Spacer(modifier = Modifier.padding(5.dp))
                     }
                 }
 
@@ -174,7 +178,6 @@ fun TextFieldCast() {
                             contentDescription = "",
                         )
                     }
-                    Spacer(modifier = Modifier.padding(5.dp))
                     innerTextField.invoke()
                 }
             }
@@ -194,17 +197,19 @@ fun MedicineElementCast(medicine: Medicine,
         ),
         modifier = modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(120.dp)
             .clip(RoundedCornerShape(30.dp)),
     ) {
         Row {
             Image(
-                bitmap = ImageBitmap.imageResource(R.drawable.test_medicine),
+                painter = rememberAsyncImagePainter(model =medicine.medicineImage.toUri()),
                 contentDescription = "",
                 modifier = Modifier
                     .padding(5.dp)
-                    .clip(RoundedCornerShape(30.dp)),
-                contentScale = ContentScale.Fit
+                    .width(160.dp)
+                    .clip(RoundedCornerShape(30.dp))
+                    .paint( painter = painterResource(id = R.drawable.test_medicine)),
+                contentScale = ContentScale.Crop
             )
             Column(
                 modifier = Modifier
@@ -216,15 +221,16 @@ fun MedicineElementCast(medicine: Medicine,
                 Text(
                     text = medicine.medicineName,
                     style = TextStyle(
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
                         fontFamily = Comfortaa,
                         textAlign = TextAlign.Center
                     )
                 )
+                Spacer(modifier = Modifier.padding(5.dp))
                 Text(
                     text = medicine.medicineDate,
                     style = TextStyle(
-                        fontSize = 12.sp,
+                        fontSize = 16.sp,
                         fontFamily = Comfortaa
                     )
                 )
