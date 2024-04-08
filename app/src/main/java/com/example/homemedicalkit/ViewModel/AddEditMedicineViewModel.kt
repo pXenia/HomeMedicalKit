@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +20,7 @@ class AddEditMedicineViewModel @Inject constructor(
     private val medicineUseCases: MedicineUseCases,
     savedStateHandler: SavedStateHandle
 ): ViewModel() {
+
     private val _medicineName = mutableStateOf(MedicineTextFieldStates(
         hint = "Название"
     ))
@@ -35,8 +37,8 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineTags = mutableStateOf(MedicineTextFieldStates())
     val medicineTags: State<MedicineTextFieldStates> = _medicineTags
 
-    private val _medicineImage = mutableStateOf("")
-    val medicineImage: State<String> = _medicineImage
+    private val _medicineImage = mutableStateOf(MedicineImageState(imageUri = ""))
+    val medicineImage: State<MedicineImageState> = _medicineImage
 
     private val _medicineDescription = mutableStateOf(MedicineTextFieldStates(
         hint = "Описание "
@@ -47,7 +49,7 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var currentMedicineId: Int? = null
+    var currentMedicineId: Int? = null
     init {
         savedStateHandler.get<Int?>("medicineId")?.let{ medicineId ->
             if (medicineId != -1){
@@ -67,7 +69,10 @@ class AddEditMedicineViewModel @Inject constructor(
                             isHintVisible = false
                         )
                         _medicineFew.value = medicine.medicineNumberFew
-                        _medicineImage.value=medicine.medicineImage
+                        _medicineImage.value = medicineImage.value.copy(
+                            imageUri = medicine.medicineImage
+                        )
+
                     }
                 }
             }
@@ -112,7 +117,10 @@ class AddEditMedicineViewModel @Inject constructor(
                 _medicineFew.value = !medicineFew.value
             }
             is AddEditMedicineEvent.EnteredImage -> {
-                _medicineImage.value = medicineImage.value
+                File(_medicineImage.value.imageUri).delete()
+                _medicineImage.value = medicineImage.value.copy(
+                    imageUri = event.value
+                )
             }
             is AddEditMedicineEvent.SaveMedicine ->{
                 viewModelScope.launch {
@@ -124,7 +132,7 @@ class AddEditMedicineViewModel @Inject constructor(
                                 medicineDescription = medicineDescription.value.text,
                                 medicineKit = 1,
                                 medicineNumberFew = medicineFew.value,
-                                medicineImage = medicineImage.value,
+                                medicineImage = medicineImage.value.imageUri,
                                 medicineId = currentMedicineId
                             )
                         )

@@ -6,7 +6,6 @@
         android:name="android.hardware.camera"
         android:required="false" />
     <uses-permission android:name="android.permission.CAMERA"/>
-
     <application
         android:name=".HomeMedicalKitApp"
         android:allowBackup="true"

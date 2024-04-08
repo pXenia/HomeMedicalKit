@@ -2,9 +2,8 @@ package com.example.homemedicalkit.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
-import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -46,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -55,7 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
@@ -78,29 +78,25 @@ fun MedicineShow(
     viewModel: AddEditMedicineViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    var hasImage = remember {
-        mutableStateOf(false)
-    }
     var imageUri = remember {
-        mutableStateOf<Uri?>(null)
+        mutableStateOf(viewModel.medicineImage.value.imageUri.toUri())
     }
-
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
-            hasImage.value = success
+            viewModel.onEvent(AddEditMedicineEvent.EnteredImage(imageUri.value.toString()))
         }
     )
-
     val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()) {
+        ActivityResultContracts.RequestPermission()){
         if (it) {
             val uri = ComposeFileProvider.getImageUri(context)
             imageUri.value = uri
             cameraLauncher.launch(imageUri.value)
         }
-        else{}
+        else{Toast.makeText(context, "Необходим доступ к камере!", Toast.LENGTH_SHORT).show()}
     }
+
 
     val nameState = viewModel.medicineName.value
     Scaffold (
@@ -153,9 +149,7 @@ fun MedicineShow(
                         Icon(Icons.Filled.Menu, "Menu")
                     }
                     Image(
-                        painter = if (hasImage.value && imageUri.value != null)
-                            rememberAsyncImagePainter(
-                                model = imageUri.value) else painterResource(id = R.drawable.test_medicine),
+                        painter = rememberAsyncImagePainter(viewModel.medicineImage.value.imageUri.toUri()),
                         contentDescription = "",
                         modifier = Modifier
                             .padding(20.dp)
@@ -163,9 +157,11 @@ fun MedicineShow(
                             .clip(
                                 RoundedCornerShape(30.dp)
                             )
+                            .paint( painter = painterResource(id = R.drawable.test_medicine)
+                            )
                             .clickable {
                                 val permissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-                                if (permissionResult == PackageManager.PERMISSION_GRANTED) {
+                                if (permissionResult == PackageManager.PERMISSION_GRANTED ) {
                                     val uri = ComposeFileProvider.getImageUri(context)
                                     imageUri.value = uri
                                     cameraLauncher.launch(uri)
@@ -329,24 +325,3 @@ fun CheckBoxCast(viewModel: AddEditMedicineViewModel) {
     )
 }
 
-class ComposeFileProvider : FileProvider(
-    R.xml.files
-) {
-    companion object {
-        fun getImageUri(context: Context): Uri {
-            val directory = File(context.cacheDir, "images")
-            directory.mkdirs()
-            val file = File.createTempFile(
-                "JPEG_${System.currentTimeMillis()}",
-                ".jpg",
-                directory,
-            )
-            val authority = context.packageName + ".fileprovider"
-            return getUriForFile(
-                context,
-                authority,
-                file,
-            )
-        }
-    }
-}
