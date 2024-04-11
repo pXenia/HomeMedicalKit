@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -117,7 +116,6 @@ class AddEditMedicineViewModel @Inject constructor(
                 _medicineFew.value = !medicineFew.value
             }
             is AddEditMedicineEvent.EnteredImage -> {
-                File(_medicineImage.value.imageUri).delete()
                 _medicineImage.value = medicineImage.value.copy(
                     imageUri = event.value
                 )
