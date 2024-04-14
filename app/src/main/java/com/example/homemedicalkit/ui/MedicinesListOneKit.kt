@@ -228,7 +228,7 @@ fun MedicineElementCast(medicine: Medicine,
                 )
                 Spacer(modifier = Modifier.padding(5.dp))
                 Text(
-                    text = medicine.medicineDate,
+                    text = medicine.medicineDate.toString(),
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontFamily = Comfortaa

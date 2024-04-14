@@ -12,9 +12,9 @@ data class Medicine(
     @ColumnInfo(name = "name")
     var medicineName: String = "",
     @ColumnInfo(name = "date")
-    var medicineDate: String = "",
+    var medicineDate: Long = 0L,
     @ColumnInfo(name = "kit")
-    var medicineKit: Long = 0,
+    var medicineKit: Long = 0L,
     @ColumnInfo(name = "few")
     var medicineNumberFew: Boolean = false,
     @ColumnInfo(name = "image")

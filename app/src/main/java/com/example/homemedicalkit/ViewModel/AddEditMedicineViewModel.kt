@@ -21,14 +21,12 @@ class AddEditMedicineViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _medicineName = mutableStateOf(MedicineTextFieldStates(
-        hint = "Название"
+        text = "Название"
     ))
     val medicineName: State<MedicineTextFieldStates> = _medicineName
 
-    private val _medicineDate = mutableStateOf(MedicineTextFieldStates(
-        hint = "01.01.2070"
-    ))
-    val medicineDate: State<MedicineTextFieldStates> = _medicineDate
+    private val _medicineDate = mutableStateOf(0L)
+    val medicineDate: State<Long> = _medicineDate
 
     private val _medicineFew = mutableStateOf(false)
     val medicineFew: State<Boolean> = _medicineFew
@@ -40,7 +38,7 @@ class AddEditMedicineViewModel @Inject constructor(
     val medicineImage: State<MedicineImageState> = _medicineImage
 
     private val _medicineDescription = mutableStateOf(MedicineTextFieldStates(
-        hint = "Описание "
+        text = "Описание "
     ))
     val medicineDescription: State<MedicineTextFieldStates> = _medicineDescription
 
@@ -59,10 +57,8 @@ class AddEditMedicineViewModel @Inject constructor(
                             text = medicine.medicineName,
                             isHintVisible = false
                         )
-                        _medicineDate.value = medicineDate.value.copy(
-                            text = medicine.medicineDate,
-                            isHintVisible = false
-                        )
+                        _medicineDate.value = medicine.medicineDate
+
                         _medicineDescription.value = medicineDescription.value.copy(
                             text = medicine.medicineDescription,
                             isHintVisible = false
@@ -91,25 +87,11 @@ class AddEditMedicineViewModel @Inject constructor(
                 )
             }
             is AddEditMedicineEvent.EnteredDate ->{
-                _medicineDate.value = medicineDate.value.copy(
-                    text = event.value
-                )
-            }
-            is AddEditMedicineEvent.ChangeFocusDate ->{
-                _medicineDate.value = medicineDate.value.copy(
-                    isHintVisible = !event.focusState.isFocused &&
-                            medicineDate.value.text.isBlank()
-                )
+                _medicineDate.value = event.value
             }
             is AddEditMedicineEvent.EnteredDescription ->{
                 _medicineDescription.value = medicineDescription.value.copy(
                     text = event.value
-                )
-            }
-            is AddEditMedicineEvent.ChangeFocusDescription ->{
-                _medicineDescription.value = medicineDescription.value.copy(
-                    isHintVisible = !event.focusState.isFocused &&
-                            medicineDate.value.text.isBlank()
                 )
             }
             is AddEditMedicineEvent.EnteredMedicineFew -> {
@@ -126,7 +108,7 @@ class AddEditMedicineViewModel @Inject constructor(
                         medicineUseCases.addMedicine(
                             Medicine(
                                 medicineName = medicineName.value.text,
-                                medicineDate = medicineDate.value.text,
+                                medicineDate = medicineDate.value,
                                 medicineDescription = medicineDescription.value.text,
                                 medicineKit = 1,
                                 medicineNumberFew = medicineFew.value,

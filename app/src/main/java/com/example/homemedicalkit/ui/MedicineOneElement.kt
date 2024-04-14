@@ -1,5 +1,5 @@
 package com.example.homemedicalkit.ui
-
+/*
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -309,7 +309,7 @@ fun DateTimeField(viewModel: AddEditMedicineViewModel) {
         BasicTextField(
             modifier = Modifier.padding(10.dp),
             textStyle = TextStyle(textAlign = TextAlign.Center),
-            value = dataState.text,
+            value = dataState.toString(),
             onValueChange = {viewModel.onEvent(AddEditMedicineEvent.EnteredDate(it))},
             visualTransformation = DateTransformation(),
             singleLine = true)
@@ -324,4 +324,4 @@ fun CheckBoxCast(viewModel: AddEditMedicineViewModel) {
         colors = CheckboxDefaults.colors(checkedColor = LightBlue2, checkmarkColor = DarkBlue)
     )
 }
-
+*/

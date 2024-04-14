@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.homemedicalkit.ui.MedicineCard
 import com.example.homemedicalkit.ui.MedicineListElements
-import com.example.homemedicalkit.ui.MedicineShow
 import com.example.homemedicalkit.ui.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,10 +38,9 @@ class MainActivity : ComponentActivity() {
                         },
                     )
                 ) {
-                    MedicineShow(navController = navController)
+                    MedicineCard(navController = navController)
                 }
             }
-
         }
     }
 } 
