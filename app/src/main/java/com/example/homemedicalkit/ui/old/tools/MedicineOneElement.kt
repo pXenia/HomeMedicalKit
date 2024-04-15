@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.ui.old.tools
 /*
 import android.Manifest
 import android.annotation.SuppressLint

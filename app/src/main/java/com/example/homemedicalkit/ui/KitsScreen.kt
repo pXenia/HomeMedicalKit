@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -47,8 +48,8 @@ import androidx.compose.ui.unit.sp
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender626997
-import com.example.homemedicalkit.ui.theme.DarkLavender7F88C0
+import com.example.homemedicalkit.ui.theme.DarkLavender200
+import com.example.homemedicalkit.ui.theme.DarkLavender100
 import com.example.homemedicalkit.ui.theme.LavenderC4C9F0
 import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 import com.example.homemedicalkit.ui.theme.Red80
@@ -72,7 +73,7 @@ fun KitsScreen(){
             ){
                 Canvas(modifier = Modifier.align(Alignment.End)) {
                     translate(left = -200f, top = 20f) {
-                        drawCircle(DarkLavender7F88C0, radius = 80.dp.toPx())}
+                        drawCircle(DarkLavender100, radius = 80.dp.toPx())}
                     translate(left = -100f, top = 220f) {
                         drawCircle(LavenderD1D5F0, radius = 70.dp.toPx())}
                     translate(left = -40f, top =50f) {
@@ -92,14 +93,14 @@ fun KitsScreen(){
                 Text(
                     modifier = Modifier
                         .padding(start = 30.dp, top = 10.dp )
-                        .width(230.dp),
-                    text = "Моя аптечка",
+                        .fillMaxWidth(),
+                    text = "Моя\nаптечка",
                     style = TextStyle(
-                        shadow = Shadow(DarkLavender626997, blurRadius = 2f),
+                        shadow = Shadow(DarkLavender200, blurRadius = 2f),
                         fontFamily = Comfortaa,
                         fontWeight = FontWeight.Bold,
                         fontSize = 48.sp,
-                        color = DarkLavender7F88C0
+                        color = DarkLavender100
                     )
                 )
                 Spacer(modifier = Modifier.height(70.dp))
@@ -148,7 +149,7 @@ fun CardKit(){
         modifier = Modifier
             .shadow(
                 elevation = 18.dp,
-                spotColor = DarkLavender626997,
+                spotColor = DarkLavender200,
                 shape = RoundedCornerShape(40.dp)
             )
             .height(200.dp)
@@ -186,7 +187,7 @@ fun CardKit(){
                     fontFamily = Comfortaa,
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 22.sp,
-                    color = DarkLavender7F88C0
+                    color = DarkLavender100
                 )
             )
 

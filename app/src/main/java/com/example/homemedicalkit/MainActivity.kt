@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.homemedicalkit.ui.MedicineCard
-import com.example.homemedicalkit.ui.MedicineListElements
+import com.example.homemedicalkit.ui.MedicinesList
 import com.example.homemedicalkit.ui.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,13 +22,13 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(
                 navController = navController,
-                startDestination = Screen.MedicineListScreen.route
+                startDestination = Screen.MedicinesList.route
             ) {
-                composable(route = Screen.MedicineListScreen.route) {
-                    MedicineListElements(navController = navController)
+                composable(route = Screen.MedicinesList.route) {
+                    MedicinesList(navController = navController)
                 }
                 composable(
-                    route = Screen.AddEditMedicineScreen.route + "?medicineId={medicineId}",
+                    route = Screen.MedicineCard.route + "?medicineId={medicineId}",
                     arguments = listOf(
                         navArgument(
                             name = "medicineId"

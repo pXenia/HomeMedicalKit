@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui.tools
+package com.example.homemedicalkit.ui.old.tools
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping

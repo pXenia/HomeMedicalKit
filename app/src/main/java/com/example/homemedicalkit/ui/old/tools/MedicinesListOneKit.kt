@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.ui.old.tools
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -54,10 +54,13 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ViewModel.MedicalKitViewModel
 import com.example.homemedicalkit.dataBase.Medicine
+import com.example.homemedicalkit.ui.Screen
+import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlue
 import com.example.homemedicalkit.ui.theme.LightBlue1
 import com.example.homemedicalkit.ui.theme.LightBlue2
+import com.example.homemedicalkit.ui.theme.WhiteEAEBEC
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -70,12 +73,9 @@ fun MedicineListElements(medKitName: String = "Моя аптечка",
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier
-                    .size(70.dp)
-                    .padding(5.dp),
-                containerColor = DarkBlue,
-                contentColor = LightBlue1,
-                onClick = { navController.navigate(Screen.AddEditMedicineScreen.route)},
+                containerColor = BlueAFC5F0,
+                contentColor = WhiteEAEBEC,
+                onClick = { navController.navigate(Screen.MedicineCard.route)},
                 shape = CircleShape
             ) {
                 Icon(Icons.Filled.Add, "Add")
@@ -96,7 +96,7 @@ fun MedicineListElements(medKitName: String = "Моя аптечка",
                         medicine ->
                         MedicineElementCast(medicine = medicine, modifier = Modifier.clickable {
                             navController.navigate(
-                                Screen.AddEditMedicineScreen.route + "?medicineId=${medicine.medicineId}"
+                                Screen.MedicineCard.route + "?medicineId=${medicine.medicineId}"
                             )
                         })
                         Spacer(modifier = Modifier.padding(5.dp))

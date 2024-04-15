@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
@@ -60,8 +61,8 @@ import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
 import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender626997
-import com.example.homemedicalkit.ui.theme.DarkLavender7F88C0
+import com.example.homemedicalkit.ui.theme.DarkLavender200
+import com.example.homemedicalkit.ui.theme.DarkLavender100
 import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -97,7 +98,7 @@ fun MedicineCard(navController: NavController,
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
-                            listOf(LavenderD1D5F0, DarkLavender7F88C0)
+                            listOf(LavenderD1D5F0, DarkLavender100)
                         )
                     )
                     .padding(10.dp)
@@ -108,7 +109,7 @@ fun MedicineCard(navController: NavController,
                         modifier = Modifier
                             .shadow(
                                 elevation = 18.dp,
-                                spotColor = DarkLavender626997
+                                spotColor = DarkLavender200
                             ),
                         border = BorderStroke(1.dp, Color.Gray)
                     ) {
@@ -142,7 +143,7 @@ fun MedicineCard(navController: NavController,
                                 else{
                                     permissionLauncher.launch(Manifest.permission.CAMERA)
                                 }},
-                            shape = RoundedCornerShape(40.dp)
+                            shape = CircleShape
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.CameraAlt,
@@ -154,7 +155,7 @@ fun MedicineCard(navController: NavController,
                             onClick = {
                                 viewModel.onEvent(AddEditMedicineEvent.SaveMedicine)
                                 navController.navigateUp()},
-                            shape = RoundedCornerShape(40.dp)
+                            shape = CircleShape
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Done,
@@ -187,7 +188,8 @@ fun MedicineCard(navController: NavController,
                                         fontWeight = FontWeight.ExtraBold,
                                         fontSize = 14.sp,
                                         color = Color.Gray
-                                    ))
+                                    )
+                                )
                             }
                         )
                         Checkbox(
@@ -195,7 +197,7 @@ fun MedicineCard(navController: NavController,
                             onCheckedChange = {viewModel.onEvent(AddEditMedicineEvent.EnteredMedicineFew(it)) },
                             colors = CheckboxDefaults.colors(
                                 checkedColor = LavenderD1D5F0,
-                                checkmarkColor = DarkLavender7F88C0
+                                checkmarkColor = DarkLavender100
                             )
                         )
                         Text(

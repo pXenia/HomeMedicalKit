@@ -20,9 +20,7 @@ class AddEditMedicineViewModel @Inject constructor(
     savedStateHandler: SavedStateHandle
 ): ViewModel() {
 
-    private val _medicineName = mutableStateOf(MedicineTextFieldStates(
-        text = "Название"
-    ))
+    private val _medicineName = mutableStateOf(MedicineTextFieldStates())
     val medicineName: State<MedicineTextFieldStates> = _medicineName
 
     private val _medicineDate = mutableStateOf(0L)
@@ -37,9 +35,7 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineImage = mutableStateOf(MedicineImageState(imageUri = ""))
     val medicineImage: State<MedicineImageState> = _medicineImage
 
-    private val _medicineDescription = mutableStateOf(MedicineTextFieldStates(
-        text = "Описание "
-    ))
+    private val _medicineDescription = mutableStateOf(MedicineTextFieldStates())
     val medicineDescription: State<MedicineTextFieldStates> = _medicineDescription
 
 
