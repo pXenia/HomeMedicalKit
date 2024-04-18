@@ -61,8 +61,8 @@ import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
 import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.DarkLavender100
+import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -122,7 +122,7 @@ fun MedicineCard(navController: NavController,
                                 .paint(
                                     painter = painterResource(id = R.drawable.test_medicine)
                                 ),
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Fit
                         )
                     }
                     Row(

@@ -12,7 +12,7 @@ class GetMedicinesUseCase(
     private val repository: MedicineRepository
 ) {
     operator fun invoke(
-        medicineOrder: MedicineOrder = MedicineOrder.Date(OrderType.Descending)
+        medicineOrder: MedicineOrder = MedicineOrder.Name(OrderType.Descending)
     ): Flow<List<Medicine>> {
         return repository.getAll().map { medicines ->
             when (medicineOrder.orderType){
@@ -20,14 +20,14 @@ class GetMedicinesUseCase(
                     when(medicineOrder) {
                         is MedicineOrder.Name -> medicines.sortedBy { it.medicineName.lowercase() }
                         is MedicineOrder.Date -> medicines.sortedBy { it.medicineDate}
-                        is MedicineOrder.Color -> medicines.sortedBy { it.medicineNumberFew}
+                        is MedicineOrder.Few -> medicines.sortedBy { it.medicineNumberFew}
                     }
                 }
                 is OrderType.Descending ->{
                     when(medicineOrder) {
                         is MedicineOrder.Name -> medicines.sortedByDescending { it.medicineName.lowercase() }
                         is MedicineOrder.Date -> medicines.sortedByDescending { it.medicineDate}
-                        is MedicineOrder.Color -> medicines.sortedByDescending { it.medicineNumberFew}
+                        is MedicineOrder.Few -> medicines.sortedByDescending { it.medicineNumberFew}
                     }
                 }
             }

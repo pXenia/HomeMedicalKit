@@ -1,7 +1,6 @@
 package com.example.homemedicalkit.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,31 +16,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -59,6 +54,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ViewModel.MedicalKitViewModel
+import com.example.homemedicalkit.ViewModel.MedicineEvent
 import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
@@ -80,7 +76,7 @@ fun MedicinesList(viewModel: MedicalKitViewModel = hiltViewModel(),
                 modifier = Modifier
                     .size(70.dp)
                     .padding(5.dp),
-                containerColor = LavenderD1D5F0,
+                containerColor = BlueAFC5F0,
                 contentColor = Color.Gray,
                 onClick = { navController.navigate(Screen.MedicineCard.route)},
                 shape = CircleShape
@@ -163,12 +159,7 @@ fun MedicinesList(viewModel: MedicalKitViewModel = hiltViewModel(),
                     }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp),
-                ){
-                    items(sortParams){
-                        param -> SortParam(param)
-                    }
-                }
+                SortParam(onOrderChange =  {viewModel.onEvent(MedicineEvent.Order(it))}, medicineOrder = state.medicineOrder)
                 Spacer(modifier = Modifier.height(40.dp))
                 LazyColumn( verticalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
@@ -185,27 +176,31 @@ fun MedicinesList(viewModel: MedicalKitViewModel = hiltViewModel(),
 @Composable
 fun MedicineCardSmall(medicine: Medicine, navController: NavController) {
     val sdf = SimpleDateFormat("dd.MM.yyyy")
-    OutlinedCard(
+    Card(
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
+            .shadow(
+                elevation = 18.dp,
+                spotColor = WhiteEAEBEC,
+                shape = RoundedCornerShape(30.dp)
+            )
             .fillMaxWidth()
             .height(120.dp)
             .clickable {
                 navController.navigate(
-                Screen.MedicineCard.route + "?medicineId=${medicine.medicineId}"
-                )},
+                    Screen.MedicineCard.route + "?medicineId=${medicine.medicineId}"
+                )
+            },
         colors = CardDefaults.cardColors(
             containerColor = LavenderD1D5F0
         ),
-        border = BorderStroke(1.dp, Color.Gray)
     ) {
         Row{
-            OutlinedCard(
+            Card(
                 shape = RoundedCornerShape(30.dp),
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(8.dp)
                     .width(160.dp),
-                border = BorderStroke(1.dp, Color.Gray)
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(model = medicine.medicineImage.toUri()),
@@ -242,28 +237,3 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController) {
         }
     }
 }
-@Composable
-fun SortParam(param : String){
-    val iconChang = remember { mutableStateOf(false)}
-    Row(
-        modifier = Modifier.clickable{ iconChang.value = !iconChang.value}
-    ) {
-        Text(
-            text = param,
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontFamily = Comfortaa,
-                textAlign = TextAlign.Center,
-                color = DarkLavender200
-            )
-        )
-        Icon(
-            modifier = Modifier.height(20.dp),
-            imageVector = if (iconChang.value) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-            contentDescription = "Add",
-            tint = DarkLavender200
-        )
-
-    }
-}
-
