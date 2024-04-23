@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -69,7 +70,6 @@ import java.text.SimpleDateFormat
 fun MedicinesList(viewModel: MedicalKitViewModel = hiltViewModel(),
                   navController: NavController){
     val state = viewModel.state.value
-    val sortParams = mutableListOf("Название","Дата","Количество")
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -112,7 +112,7 @@ fun MedicinesList(viewModel: MedicalKitViewModel = hiltViewModel(),
                     modifier = Modifier
                         .align(Alignment.Start)
                         .padding(top = 5.dp),
-                    onClick = {}) {
+                    onClick = {navController.navigateUp()}) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBackIosNew,
                         contentDescription = "Add"
@@ -195,26 +195,24 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController) {
             containerColor = LavenderD1D5F0
         ),
     ) {
-        Row{
-            Card(
-                shape = RoundedCornerShape(30.dp),
+        Row {
+            Image(
+                painter = rememberAsyncImagePainter(model = medicine.medicineImage.toUri()),
+                contentDescription = "Photo",
                 modifier = Modifier
+                    .fillMaxHeight()
+                    .width(160.dp)
                     .padding(8.dp)
-                    .width(160.dp),
+                    .clip(RoundedCornerShape(30.dp))
+                    .paint(painter = painterResource(id = R.drawable.test_medicine))
+                    .shadow(elevation = 10.dp),
+                contentScale = ContentScale.Crop
+            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(10.dp)
             ) {
-                Image(
-                    painter = rememberAsyncImagePainter(model = medicine.medicineImage.toUri()),
-                    contentDescription = "Photo",
-                    modifier = Modifier
-                        .width(160.dp)
-                        .clip(RoundedCornerShape(30.dp))
-                        .paint(painter = painterResource(id = R.drawable.test_medicine)),
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Column(modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(10.dp)) {
                 Text(
                     text = medicine.medicineName,
                     modifier = Modifier.fillMaxWidth(),

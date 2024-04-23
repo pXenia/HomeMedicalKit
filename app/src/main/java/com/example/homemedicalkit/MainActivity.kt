@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.homemedicalkit.ui.KitsScreen
 import com.example.homemedicalkit.ui.MedicineCard
 import com.example.homemedicalkit.ui.MedicinesList
 import com.example.homemedicalkit.ui.Screen
@@ -22,8 +23,11 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(
                 navController = navController,
-                startDestination = Screen.MedicinesList.route
+                startDestination = Screen.KitsScreen.route
             ) {
+                composable(route = Screen.KitsScreen.route) {
+                    KitsScreen(navController = navController)
+                }
                 composable(route = Screen.MedicinesList.route) {
                     MedicinesList(navController = navController)
                 }

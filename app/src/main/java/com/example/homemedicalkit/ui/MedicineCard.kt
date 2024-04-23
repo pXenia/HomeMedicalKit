@@ -107,6 +107,8 @@ fun MedicineCard(navController: NavController,
                     OutlinedCard(
                         shape = RoundedCornerShape(30.dp),
                         modifier = Modifier
+                            .height(260.dp)
+                            .fillMaxWidth()
                             .shadow(
                                 elevation = 18.dp,
                                 spotColor = DarkLavender200
@@ -117,12 +119,11 @@ fun MedicineCard(navController: NavController,
                             painter = rememberAsyncImagePainter(viewModel.medicineImage.value.imageUri.toUri()),
                             contentDescription = "",
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(260.dp)
+                                .fillMaxSize()
                                 .paint(
-                                    painter = painterResource(id = R.drawable.test_medicine)
+                                    painter = painterResource(id = R.drawable.test_medicine), contentScale = ContentScale.Crop
                                 ),
-                            contentScale = ContentScale.Fit
+                            contentScale = ContentScale.Crop
                         )
                     }
                     Row(
@@ -168,7 +169,7 @@ fun MedicineCard(navController: NavController,
                 Column(modifier = Modifier.padding(0.dp)) {
                     DateAlertDialog(viewModel)
                     Spacer(modifier = Modifier.padding(10.dp))
-                    Row() {
+                    Row{
                         OutlinedTextField(
                             modifier = Modifier
                                 .height(48.dp)
@@ -233,10 +234,10 @@ fun MedicineCard(navController: NavController,
                                     fontWeight = FontWeight.ExtraBold,
                                     fontSize = 14.sp,
                                     color = Color.Gray
-                                ))
+                                )
+                            )
                         }
                     )
-
                 }
             }
         }

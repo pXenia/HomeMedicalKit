@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +18,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircleOutline
+import androidx.compose.material.icons.filled.CreateNewFolder
+import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -42,25 +45,25 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.DarkLavender100
+import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.LavenderC4C9F0
 import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 import com.example.homemedicalkit.ui.theme.Red80
 import com.example.homemedicalkit.ui.theme.WhiteEAEBEC
 
-@Preview
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun KitsScreen(){
+fun KitsScreen(navController: NavController){
     Scaffold(
-        bottomBar = { NavigationBarSample() },
+        bottomBar = { NavigationBarSample(navController) },
         content = {
             Column(
                 modifier = Modifier
@@ -99,11 +102,11 @@ fun KitsScreen(){
                         shadow = Shadow(DarkLavender200, blurRadius = 2f),
                         fontFamily = Comfortaa,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 48.sp,
+                        fontSize = 44.sp,
                         color = DarkLavender100
                     )
                 )
-                Spacer(modifier = Modifier.height(70.dp))
+                Spacer(modifier = Modifier.height(30.dp))
                 LazyHorizontalGrid(
                     modifier = Modifier.padding(20.dp).height(420.dp),
                     horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -111,37 +114,56 @@ fun KitsScreen(){
                     rows = GridCells.Adaptive(160.dp),
                 ) {
                     items(5) { photo ->
-                        CardKit()
+                        CardKit(navController)
                     }
                 }
             }
         }
     )
 }
-@Composable
-fun NavigationBarSample() {
-    var selectedItem = remember { mutableIntStateOf(0) }
-    val items = listOf("Songs", "Artists", "Playlists")
 
+@Composable
+fun NavigationBarSample(navController: NavController) {
+    var selectedItem = remember { mutableIntStateOf(0) }
     NavigationBar(
         modifier = Modifier
             .padding(10.dp)
-            .clip(RoundedCornerShape(30.dp))
+            .clip(RoundedCornerShape(30.dp)),
+        containerColor = WhiteEAEBEC,
     ) {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = { Icon(Icons.Filled.Add, "Add") },
-                label = { Text(item) },
-                selected = selectedItem.value == index,
-                onClick = { selectedItem.value = index }
-            )
-        }
+        NavigationBarItem(
+            icon = { Icon(Icons.Filled.CreateNewFolder, "New folder") },
+            label = { Text("Аптечки") },
+            selected = selectedItem.value == 0,
+            onClick = {
+                selectedItem.value = 0
+                navController.navigate(Screen.KitsScreen.route) },
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Filled.FormatListNumbered, "New folder") },
+            label = { Text("Все лекарства") },
+            selected = selectedItem.value == 1,
+            onClick = {
+                selectedItem.value = 1
+                navController.navigate(Screen.MedicinesList.route)}
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Filled.AddCircleOutline, "New folder") },
+            label = { Text("Добавить") },
+            selected = selectedItem.value == 2,
+            onClick = {
+                selectedItem.value = 2
+                navController.navigate(
+                Screen.MedicineCard.route + "?medicineId=${-1}"
+            )}
+        )
+
     }
 }
 
 
 @Composable
-fun CardKit(){
+fun CardKit(navController : NavController){
     Card(
         colors = CardDefaults.cardColors(
             containerColor = LavenderC4C9F0
@@ -155,6 +177,7 @@ fun CardKit(){
             .height(200.dp)
             .width(180.dp)
             .clip(RoundedCornerShape(40.dp))
+            .clickable { navController.navigate(Screen.MedicinesList.route) }
     ) {
         Column(
             modifier = Modifier

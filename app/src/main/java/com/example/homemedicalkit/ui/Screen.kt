@@ -1,6 +1,7 @@
 package com.example.homemedicalkit.ui
 
 sealed class Screen(val route: String) {
-    object MedicinesList: Screen("medical_list")
-    object MedicineCard: Screen("add_edit_medicine_screen")
+    object MedicinesList: Screen("medicines_list")
+    object MedicineCard: Screen("medicine_card")
+    object KitsScreen: Screen("kits_screen")
 }
