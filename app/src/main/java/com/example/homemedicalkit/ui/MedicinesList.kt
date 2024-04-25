@@ -54,8 +54,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.ViewModel.MedicalKitViewModel
 import com.example.homemedicalkit.ViewModel.MedicineEvent
+import com.example.homemedicalkit.ViewModel.MedicinesViewModel
 import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
@@ -67,7 +67,7 @@ import java.text.SimpleDateFormat
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MedicinesList(viewModel: MedicalKitViewModel = hiltViewModel(),
+fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                   navController: NavController){
     val state = viewModel.state.value
     Scaffold(

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline
@@ -47,21 +48,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.homemedicalkit.R
+import com.example.homemedicalkit.ViewModel.KitsViewModel
+import com.example.homemedicalkit.dataBase.Kit
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender100
 import com.example.homemedicalkit.ui.theme.DarkLavender200
+import com.example.homemedicalkit.ui.theme.Green80
 import com.example.homemedicalkit.ui.theme.LavenderC4C9F0
 import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 import com.example.homemedicalkit.ui.theme.Red80
 import com.example.homemedicalkit.ui.theme.WhiteEAEBEC
+import com.example.homemedicalkit.ui.theme.Yellow80
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun KitsScreen(navController: NavController){
+fun KitsScreen(navController: NavController,
+               viewModel: KitsViewModel = hiltViewModel()){
+    val state = viewModel.state.value
     Scaffold(
         bottomBar = { NavigationBarSample(navController) },
         content = {
@@ -95,7 +103,7 @@ fun KitsScreen(navController: NavController){
                 }
                 Text(
                     modifier = Modifier
-                        .padding(start = 30.dp, top = 10.dp )
+                        .padding(start = 30.dp, top = 10.dp)
                         .fillMaxWidth(),
                     text = "Моя\nаптечка",
                     style = TextStyle(
@@ -108,13 +116,16 @@ fun KitsScreen(navController: NavController){
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 LazyHorizontalGrid(
-                    modifier = Modifier.padding(20.dp).height(420.dp),
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .height(420.dp),
                     horizontalArrangement = Arrangement.spacedBy(20.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     rows = GridCells.Adaptive(160.dp),
                 ) {
-                    items(5) { photo ->
-                        CardKit(navController)
+                    items(state.kits) {
+                        kit ->
+                        CardKit(kit = kit, navController = navController)
                     }
                 }
             }
@@ -163,7 +174,8 @@ fun NavigationBarSample(navController: NavController) {
 
 
 @Composable
-fun CardKit(navController : NavController){
+fun CardKit(kit: Kit,navController : NavController){
+    val colors = listOf(Red80, Yellow80, Green80)
     Card(
         colors = CardDefaults.cardColors(
             containerColor = LavenderC4C9F0
@@ -187,7 +199,7 @@ fun CardKit(navController : NavController){
             Spacer(modifier = Modifier.height(5.dp))
             Canvas(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 translate(left = 0f, top = 160f) {
-                    drawCircle(Red80, radius = 55.dp.toPx())
+                    drawCircle(colors[kit.kitColor], radius = 55.dp.toPx())
                 }
             }
             Image(
@@ -204,7 +216,7 @@ fun CardKit(navController : NavController){
                     .width(140.dp)
                     .height(36.dp)
                     .align(Alignment.CenterHorizontally),
-                text = "Детское",
+                text = kit.kitName,
                 style = TextStyle(
                     textAlign = TextAlign.Center,
                     fontFamily = Comfortaa,

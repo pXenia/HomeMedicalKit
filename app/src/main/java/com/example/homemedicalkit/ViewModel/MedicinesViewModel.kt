@@ -2,10 +2,8 @@ package com.example.homemedicalkit.ViewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homemedicalkit.dataBase.MedicineDao
 import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.dataBase.MedicineOrder
 import com.example.homemedicalkit.dataBase.OrderType
@@ -19,7 +17,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MedicalKitViewModel @Inject constructor(
+class MedicinesViewModel @Inject constructor(
     private val medicineUseCases: MedicineUseCases
 ): ViewModel(){
     private val _state = mutableStateOf(MedicineState())

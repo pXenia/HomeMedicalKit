@@ -2,13 +2,19 @@ package com.example.homemedicalkit
 
 import android.app.Application
 import androidx.room.Room
+import com.example.homemedicalkit.dataBase.KitRepository
+import com.example.homemedicalkit.dataBase.KitRepositoryImpl
 import com.example.homemedicalkit.dataBase.MedicalKitDatabase
 import com.example.homemedicalkit.dataBase.MedicineRepository
 import com.example.homemedicalkit.dataBase.MedicineRepositoryImpl
+import com.example.homemedicalkit.dataBase.useCase.AddKitUseCase
 import com.example.homemedicalkit.dataBase.useCase.AddMedicineUseCase
+import com.example.homemedicalkit.dataBase.useCase.DeleteKitUseCase
 import com.example.homemedicalkit.dataBase.useCase.DeleteMedicineUseCase
+import com.example.homemedicalkit.dataBase.useCase.GetKitsUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetMedicinesUseCase
+import com.example.homemedicalkit.dataBase.useCase.KitUseCases
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
 import dagger.Module
 import dagger.Provides
@@ -34,13 +40,25 @@ object AppModule {
         return MedicineRepositoryImpl(db.medicineDao)
     }
     @Provides
+    @Singleton
+    fun provideKitRepository(db:MedicalKitDatabase): KitRepository{
+        return KitRepositoryImpl(db.kitDao)
+    }
+    @Provides
     fun provideMedicineUseCases(repository: MedicineRepository):MedicineUseCases{
         return MedicineUseCases(
             getMedicines = GetMedicinesUseCase(repository),
             deleteMedicine = DeleteMedicineUseCase(repository),
             addMedicine = AddMedicineUseCase(repository),
             getMedicine = GetMedicineUseCase(repository)
-
+        )
+    }
+    @Provides
+    fun provideKitUseCases(repository: KitRepository): KitUseCases{
+        return KitUseCases(
+            getKits = GetKitsUseCase(repository),
+            deleteKit = DeleteKitUseCase(repository),
+            addKit = AddKitUseCase(repository)
         )
     }
 }
