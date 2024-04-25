@@ -11,6 +11,8 @@ interface KitDao {
     suspend fun insert(kit: Kit)
     @Delete
     suspend fun delete(kit: Kit)
+    @Query("SELECT * FROM kits_table WHERE kitId = :kitId")
+    suspend fun getKit(kitId: Int?): Kit?
     @Query("SELECT * FROM kits_table ORDER BY kitId ASC")
     fun getAll(): Flow<List<Kit>>
 }

@@ -11,6 +11,7 @@ import com.example.homemedicalkit.dataBase.useCase.AddKitUseCase
 import com.example.homemedicalkit.dataBase.useCase.AddMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.DeleteKitUseCase
 import com.example.homemedicalkit.dataBase.useCase.DeleteMedicineUseCase
+import com.example.homemedicalkit.dataBase.useCase.GetKitUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetKitsUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetMedicineUseCase
 import com.example.homemedicalkit.dataBase.useCase.GetMedicinesUseCase
@@ -58,7 +59,8 @@ object AppModule {
         return KitUseCases(
             getKits = GetKitsUseCase(repository),
             deleteKit = DeleteKitUseCase(repository),
-            addKit = AddKitUseCase(repository)
+            addKit = AddKitUseCase(repository),
+            getKit = GetKitUseCase(repository)
         )
     }
 }
