@@ -5,12 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homemedicalkit.dataBase.useCase.KitUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class KitsViewModel@Inject constructor(
     private val kitUseCases: KitUseCases
 ): ViewModel() {
@@ -35,11 +37,10 @@ class KitsViewModel@Inject constructor(
     private fun getKits() {
         getKitsJob?.cancel()
         getKitsJob = kitUseCases.getKits()
-            .onEach { kit ->
+            .onEach { kits ->
                 _state.value = state.value.copy(
-                    kits = kit
+                    kits = kits
                 )
             }.launchIn(viewModelScope)
     }
-
 }

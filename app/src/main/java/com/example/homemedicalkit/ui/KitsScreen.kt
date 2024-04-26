@@ -95,7 +95,11 @@ fun KitsScreen(navController: NavController,
                     modifier = Modifier
                         .align(Alignment.End)
                         .padding(8.dp),
-                    onClick = {}) {
+                    onClick = {
+                        navController.navigate(
+                            Screen.KitDialog.route + "?kitId=${-1}"
+                        )
+                    }) {
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = "Add"
@@ -174,7 +178,7 @@ fun NavigationBarSample(navController: NavController) {
 
 
 @Composable
-fun CardKit(kit: Kit,navController : NavController){
+fun CardKit(kit: Kit, navController : NavController){
     val colors = listOf(Red80, Yellow80, Green80)
     Card(
         colors = CardDefaults.cardColors(
