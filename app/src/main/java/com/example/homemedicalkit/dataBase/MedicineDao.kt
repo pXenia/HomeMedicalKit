@@ -19,4 +19,6 @@ interface MedicineDao {
     suspend fun getMedicine(medicineId: Int?): Medicine?
     @Query("SELECT * FROM medicines_table ORDER BY medicineId ASC")
     fun getAll(): Flow<List<Medicine>>
+    @Query("SELECT * FROM medicines_table WHERE kit = :medicineKit ORDER BY medicineId ASC")
+    fun getAllFromKit(medicineKit: Int): Flow<List<Medicine>>
 }

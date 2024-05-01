@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 composable(route = Screen.KitsScreen.route) {
                     KitsScreen(navController = navController)
                 }
-                composable(route = Screen.MedicinesList.route+ "?kitId={kitId}",
+                composable(route = Screen.MedicinesList.route + "?kitId={kitId}",
                     arguments = listOf(
                         navArgument(
                             name = "kitId"
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     route = Screen.KitDialog.route + "?kitId={kitId}",
                     arguments = listOf(
                         navArgument(
-                            name = "kitId"
+                            name = "kitId",
                         ) {
                             type = NavType.IntType
                             defaultValue = -1

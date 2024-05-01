@@ -122,7 +122,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                     modifier = Modifier
                         .padding(start = 30.dp, top = 8.dp)
                         .fillMaxWidth(),
-                    text = "Детское",
+                    text = viewModel.kitName.value,
                     style = TextStyle(
                         shadow = Shadow(DarkLavender200, blurRadius = 2f),
                         fontFamily = Comfortaa,

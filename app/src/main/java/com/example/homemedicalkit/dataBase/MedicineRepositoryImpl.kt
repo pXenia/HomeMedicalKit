@@ -24,5 +24,8 @@ class MedicineRepositoryImpl(
     override fun getAll(): Flow<List<Medicine>> {
         return dao.getAll()
     }
+    override fun getAllFromKit(kit: Int): Flow<List<Medicine>> {
+        return dao.getAllFromKit(kit)
+    }
 
 }

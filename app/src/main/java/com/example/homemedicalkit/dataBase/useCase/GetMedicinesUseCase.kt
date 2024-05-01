@@ -12,9 +12,10 @@ class GetMedicinesUseCase(
     private val repository: MedicineRepository
 ) {
     operator fun invoke(
+        kit: Int,
         medicineOrder: MedicineOrder = MedicineOrder.Name(OrderType.Descending)
     ): Flow<List<Medicine>> {
-        return repository.getAll().map { medicines ->
+        return repository.getAllFromKit(kit).map { medicines ->
             when (medicineOrder.orderType){
                 is OrderType.Ascending ->{
                     when(medicineOrder) {

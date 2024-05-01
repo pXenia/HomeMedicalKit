@@ -14,4 +14,5 @@ interface MedicineRepository {
     suspend fun getMedicine(medicineId: Int?): Medicine?
 
     fun getAll(): Flow<List<Medicine>>
+    fun getAllFromKit(kit: Int): Flow<List<Medicine>>
 }

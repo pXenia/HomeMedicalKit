@@ -193,7 +193,9 @@ fun CardKit(kit: Kit, navController : NavController){
             .height(200.dp)
             .width(180.dp)
             .clip(RoundedCornerShape(40.dp))
-            .clickable { navController.navigate(Screen.MedicinesList.route) }
+            .clickable { navController.navigate(
+                Screen.MedicinesList.route + "?kitId=${kit.kitId}"
+            ) }
     ) {
         Column(
             modifier = Modifier

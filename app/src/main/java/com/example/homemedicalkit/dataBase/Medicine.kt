@@ -14,7 +14,7 @@ data class Medicine(
     @ColumnInfo(name = "date")
     var medicineDate: Long = 0L,
     @ColumnInfo(name = "kit")
-    var medicineKit: Long = 0L,
+    var medicineKit: Int = -1,
     @ColumnInfo(name = "few")
     var medicineNumberFew: Boolean = false,
     @ColumnInfo(name = "image")
