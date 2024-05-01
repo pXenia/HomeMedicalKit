@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.medicineCard.imageTools
 
 import android.content.Context
 import android.net.Uri

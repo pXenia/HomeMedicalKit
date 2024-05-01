@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.kitsScreen.kitDialog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -28,8 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.homemedicalkit.ViewModel.AddEditKitEvent
-import com.example.homemedicalkit.ViewModel.AddEditKitViewModel
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.Green80

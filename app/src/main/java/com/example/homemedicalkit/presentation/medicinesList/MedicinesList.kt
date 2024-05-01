@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.medicinesList
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
@@ -54,9 +54,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.ViewModel.MedicineEvent
-import com.example.homemedicalkit.ViewModel.MedicinesViewModel
 import com.example.homemedicalkit.dataBase.Medicine
+import com.example.homemedicalkit.presentation.medicinesList.components.SortParam
+import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender100

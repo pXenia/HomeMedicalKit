@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.kitsScreen.kitDialog
 
 sealed class AddEditKitEvent{
     data class EnteredName(val value: String): AddEditKitEvent()

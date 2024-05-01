@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.medicinesList.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

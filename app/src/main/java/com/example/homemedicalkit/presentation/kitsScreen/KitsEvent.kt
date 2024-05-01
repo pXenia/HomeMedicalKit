@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.kitsScreen
 
 import com.example.homemedicalkit.dataBase.Kit
 

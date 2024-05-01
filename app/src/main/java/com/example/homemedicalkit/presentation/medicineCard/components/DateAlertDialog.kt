@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.medicineCard.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -27,8 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
-import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
+import com.example.homemedicalkit.presentation.medicineCard.AddEditMedicineEvent
+import com.example.homemedicalkit.presentation.medicineCard.AddEditMedicineViewModel
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 import java.text.SimpleDateFormat

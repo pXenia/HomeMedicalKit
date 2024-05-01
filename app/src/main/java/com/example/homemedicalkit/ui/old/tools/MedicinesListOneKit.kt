@@ -52,9 +52,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.ViewModel.MedicinesViewModel
+import com.example.homemedicalkit.presentation.medicinesList.MedicinesViewModel
 import com.example.homemedicalkit.dataBase.Medicine
-import com.example.homemedicalkit.ui.Screen
+import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlue

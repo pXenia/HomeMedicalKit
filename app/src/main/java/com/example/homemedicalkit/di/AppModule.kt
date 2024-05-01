@@ -1,4 +1,4 @@
-package com.example.homemedicalkit
+package com.example.homemedicalkit.di
 
 import android.app.Application
 import androidx.room.Room

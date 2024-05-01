@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.medicinesList
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +8,8 @@ import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.dataBase.MedicineOrder
 import com.example.homemedicalkit.dataBase.OrderType
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
+import com.example.homemedicalkit.presentation.medicinesList.MedicineEvent
+import com.example.homemedicalkit.presentation.medicinesList.MedicineState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

@@ -1,10 +1,12 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.kitsScreen
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homemedicalkit.dataBase.useCase.KitUseCases
+import com.example.homemedicalkit.presentation.kitsScreen.KitState
+import com.example.homemedicalkit.presentation.kitsScreen.KitsEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

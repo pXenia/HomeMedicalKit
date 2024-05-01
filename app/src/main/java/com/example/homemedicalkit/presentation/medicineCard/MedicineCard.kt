@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.medicineCard
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -57,8 +57,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.ViewModel.AddEditMedicineEvent
-import com.example.homemedicalkit.ViewModel.AddEditMedicineViewModel
+import com.example.homemedicalkit.presentation.medicineCard.imageTools.ComposeFileProvider
+import com.example.homemedicalkit.presentation.medicineCard.components.DateAlertDialog
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender100

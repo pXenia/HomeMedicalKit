@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.kitsScreen.kitDialog
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

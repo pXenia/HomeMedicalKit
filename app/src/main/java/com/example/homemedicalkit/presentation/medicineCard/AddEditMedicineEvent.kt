@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.medicineCard
 
 import androidx.compose.ui.focus.FocusState
 

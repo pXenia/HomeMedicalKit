@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.kitsScreen
 
 
 import android.annotation.SuppressLint
@@ -51,8 +51,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.ViewModel.KitsViewModel
 import com.example.homemedicalkit.dataBase.Kit
+import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender100

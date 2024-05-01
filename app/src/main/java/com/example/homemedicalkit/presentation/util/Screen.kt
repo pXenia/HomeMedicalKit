@@ -1,4 +1,4 @@
-package com.example.homemedicalkit.ui
+package com.example.homemedicalkit.presentation.util
 
 sealed class Screen(val route: String) {
     object MedicinesList: Screen("medicines_list")

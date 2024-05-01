@@ -1,10 +1,12 @@
-package com.example.homemedicalkit.ViewModel
+package com.example.homemedicalkit.presentation.medicineCard
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.homemedicalkit.presentation.medicinesList.MedicineImageState
+import com.example.homemedicalkit.presentation.medicinesList.MedicineTextFieldStates
 import com.example.homemedicalkit.dataBase.InvalidMedicineException
 import com.example.homemedicalkit.dataBase.Medicine
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases

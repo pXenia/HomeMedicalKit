@@ -10,11 +10,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.homemedicalkit.ui.KitDialog
-import com.example.homemedicalkit.ui.KitsScreen
-import com.example.homemedicalkit.ui.MedicineCard
-import com.example.homemedicalkit.ui.MedicinesList
-import com.example.homemedicalkit.ui.Screen
+import com.example.homemedicalkit.presentation.kitsScreen.KitsScreen
+import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.KitDialog
+import com.example.homemedicalkit.presentation.medicineCard.MedicineCard
+import com.example.homemedicalkit.presentation.medicinesList.MedicinesList
+import com.example.homemedicalkit.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,7 +30,15 @@ class MainActivity : ComponentActivity() {
                 composable(route = Screen.KitsScreen.route) {
                     KitsScreen(navController = navController)
                 }
-                composable(route = Screen.MedicinesList.route) {
+                composable(route = Screen.MedicinesList.route+ "?kitId={kitId}",
+                    arguments = listOf(
+                        navArgument(
+                            name = "kitId"
+                        ) {
+                            type = NavType.IntType
+                            defaultValue = -1
+                        },
+                    )) {
                     MedicinesList(navController = navController)
                 }
                 composable(
