@@ -9,5 +9,7 @@ sealed class AddEditMedicineEvent {
     data class EnteredMedicineFew(val value: Boolean): AddEditMedicineEvent()
     data class EnteredDescription(val value: String): AddEditMedicineEvent()
     data class EnteredImage(val value: String): AddEditMedicineEvent()
+    data class EnteredKit(val value: Int): AddEditMedicineEvent()
+
     object SaveMedicine: AddEditMedicineEvent()
 }

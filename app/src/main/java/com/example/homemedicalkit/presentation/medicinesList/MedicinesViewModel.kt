@@ -28,15 +28,16 @@ class MedicinesViewModel @Inject constructor(
     val state: State<MedicineState> = _state
     private var recentlyDeletedMedicine: Medicine? = null
     private var getMedicineJob: Job? = null
-    private val kit =  savedStateHandler.get<Int>("kitId")
+    val kitId =  savedStateHandler.get<Int>("kitId")
     private val _kitName = mutableStateOf("")
     val kitName: State<String> = _kitName
+
     init{
-        if (kit != -1)
-            kit?.let {
+        if (kitId != -1)
+            kitId?.let {
                 getMedicines(MedicineOrder.Date(OrderType.Descending), it)
                 viewModelScope.launch {
-                    kitUseCases.getKit(kit)?.also {  kit ->
+                    kitUseCases.getKit(kitId)?.also { kit ->
                         _kitName.value = kit.kitName
                     }}
             }
@@ -48,7 +49,7 @@ class MedicinesViewModel @Inject constructor(
                     state.value.medicineOrder.orderType == event.medicineOrder.orderType) {
                     return
                 }
-                kit?.let { getMedicines(event.medicineOrder, it) }
+                kitId?.let { getMedicines(event.medicineOrder, it) }
 
             }
             is MedicineEvent.DeleteMedicine -> {

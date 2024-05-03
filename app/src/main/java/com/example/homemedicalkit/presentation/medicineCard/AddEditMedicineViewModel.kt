@@ -1,26 +1,33 @@
 package com.example.homemedicalkit.presentation.medicineCard
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.homemedicalkit.presentation.medicinesList.MedicineImageState
-import com.example.homemedicalkit.presentation.medicinesList.MedicineTextFieldStates
 import com.example.homemedicalkit.dataBase.InvalidMedicineException
 import com.example.homemedicalkit.dataBase.Medicine
+import com.example.homemedicalkit.dataBase.useCase.KitUseCases
 import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
+import com.example.homemedicalkit.presentation.medicinesList.MedicineImageState
+import com.example.homemedicalkit.presentation.medicinesList.MedicineTextFieldStates
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditMedicineViewModel @Inject constructor(
     private val medicineUseCases: MedicineUseCases,
+    private val kitUseCases: KitUseCases,
     savedStateHandler: SavedStateHandle
 ): ViewModel() {
+    private var getKitsJob: Job? = null
 
     private val _medicineName = mutableStateOf(MedicineTextFieldStates())
     val medicineName: State<MedicineTextFieldStates> = _medicineName
@@ -34,6 +41,12 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineTags = mutableStateOf(MedicineTextFieldStates())
     val medicineTags: State<MedicineTextFieldStates> = _medicineTags
 
+    private val _medicineKit = mutableStateOf( savedStateHandler.get<Int>("kitId") ?: -1)
+    val medicineKit: State<Int> = _medicineKit
+
+    private var _kitsNames: MutableMap<Int,String> = mutableMapOf()
+    val stateKits: MutableMap<Int,String> = _kitsNames
+
     private val _medicineImage = mutableStateOf(MedicineImageState(imageUri = ""))
     val medicineImage: State<MedicineImageState> = _medicineImage
 
@@ -46,6 +59,8 @@ class AddEditMedicineViewModel @Inject constructor(
 
     var currentMedicineId: Int? = null
     init {
+        Log.d("VMCard", savedStateHandler.toString())
+        getKits()
         savedStateHandler.get<Int?>("medicineId")?.let{ medicineId ->
             if (medicineId != -1){
                 viewModelScope.launch {
@@ -65,7 +80,7 @@ class AddEditMedicineViewModel @Inject constructor(
                         _medicineImage.value = medicineImage.value.copy(
                             imageUri = medicine.medicineImage
                         )
-
+                        _medicineKit.value = medicine.medicineKit
                     }
                 }
             }
@@ -100,6 +115,8 @@ class AddEditMedicineViewModel @Inject constructor(
                     imageUri = event.value
                 )
             }
+            is AddEditMedicineEvent.EnteredKit -> {
+                _medicineKit.value = event.value }
             is AddEditMedicineEvent.SaveMedicine ->{
                 viewModelScope.launch {
                     try{
@@ -108,7 +125,7 @@ class AddEditMedicineViewModel @Inject constructor(
                                 medicineName = medicineName.value.text,
                                 medicineDate = medicineDate.value,
                                 medicineDescription = medicineDescription.value.text,
-                                medicineKit = 1,
+                                medicineKit = medicineKit.value,
                                 medicineNumberFew = medicineFew.value,
                                 medicineImage = medicineImage.value.imageUri,
                                 medicineId = currentMedicineId
@@ -130,6 +147,15 @@ class AddEditMedicineViewModel @Inject constructor(
         }
     }
 
+    private fun getKits() {
+        getKitsJob?.cancel()
+        getKitsJob = kitUseCases.getKits()
+            .onEach { kits ->
+                kits.onEach {
+                    _kitsNames[it.kitId!!] = it.kitName
+                }
+            }.launchIn(viewModelScope)
+    }
     sealed class UiEvent{
         data class ShowSnackBar (val message: String): UiEvent()
         object SaveMedicine: UiEvent()

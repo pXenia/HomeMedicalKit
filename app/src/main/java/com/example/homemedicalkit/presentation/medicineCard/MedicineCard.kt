@@ -3,6 +3,7 @@ package com.example.homemedicalkit.presentation.medicineCard
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,6 +28,10 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults.TrailingIcon
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
@@ -57,8 +62,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.presentation.medicineCard.imageTools.ComposeFileProvider
 import com.example.homemedicalkit.presentation.medicineCard.components.DateAlertDialog
+import com.example.homemedicalkit.presentation.medicineCard.imageTools.ComposeFileProvider
 import com.example.homemedicalkit.ui.theme.BlueAFC5F0
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender100
@@ -121,7 +126,8 @@ fun MedicineCard(navController: NavController,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .paint(
-                                    painter = painterResource(id = R.drawable.test_medicine), contentScale = ContentScale.Crop
+                                    painter = painterResource(id = R.drawable.test_medicine),
+                                    contentScale = ContentScale.Crop
                                 ),
                             contentScale = ContentScale.Crop
                         )
@@ -166,8 +172,12 @@ fun MedicineCard(navController: NavController,
 
                     }
                 }
-                Column(modifier = Modifier.padding(0.dp)) {
-                    DateAlertDialog(viewModel)
+                Column(modifier = Modifier.padding(top = 10.dp)) {
+                    Row() {
+                        DateAlertDialog(viewModel)
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        DropdownMenuBox(viewModel)
+                    }
                     Spacer(modifier = Modifier.padding(10.dp))
                     Row{
                         OutlinedTextField(
@@ -243,4 +253,47 @@ fun MedicineCard(navController: NavController,
         }
     )
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropdownMenuBox(viewModel: AddEditMedicineViewModel) {
 
+    val kitsNames = viewModel.stateKits
+    var expanded = remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded.value,
+        onExpandedChange = {
+            expanded.value = !expanded.value
+        }
+    ) {
+        OutlinedTextField(
+            value = kitsNames[viewModel.medicineKit.value] ?: "",
+            onValueChange = {},
+            readOnly = true,
+            trailingIcon = { TrailingIcon(expanded = expanded.value) },
+            modifier = Modifier
+                .height(48.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(30.dp))
+                .background(LavenderD1D5F0)
+                .menuAnchor(),
+            shape = RoundedCornerShape(30.dp),
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false }
+        ) {
+            kitsNames.forEach { item ->
+                DropdownMenuItem(
+                    text = { Text(text = item.value) },
+                    onClick = {
+                        Log.d("Card", kitsNames[viewModel.medicineKit.value]!!)
+                        viewModel.onEvent(AddEditMedicineEvent.EnteredKit(item.key))
+                        expanded.value = false
+                    }
+                )
+            }
+        }
+    }
+}

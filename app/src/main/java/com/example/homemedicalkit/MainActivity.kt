@@ -42,10 +42,23 @@ class MainActivity : ComponentActivity() {
                     MedicinesList(navController = navController)
                 }
                 composable(
-                    route = Screen.MedicineCard.route + "?medicineId={medicineId}",
+                    route = Screen.MedicineCard.route+"?medicineId={medicineId}",
                     arguments = listOf(
                         navArgument(
                             name = "medicineId"
+                        ) {
+                            type = NavType.IntType
+                            defaultValue = -1
+                        },
+                    )
+                ) {
+                    MedicineCard(navController = navController)
+                }
+                composable(
+                    route = Screen.MedicineCard.route+"?kitId={kitId}",
+                    arguments = listOf(
+                        navArgument(
+                            name = "kitId"
                         ) {
                             type = NavType.IntType
                             defaultValue = -1

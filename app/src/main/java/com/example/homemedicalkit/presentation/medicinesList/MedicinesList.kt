@@ -78,7 +78,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                     .padding(5.dp),
                 containerColor = BlueAFC5F0,
                 contentColor = Color.Gray,
-                onClick = { navController.navigate(Screen.MedicineCard.route)},
+                onClick = { navController.navigate(Screen.MedicineCard.route+"?kitId=${viewModel.kitId}")},
                 shape = CircleShape
             ) {
                 Icon(Icons.Filled.Add, "Add")
@@ -165,7 +165,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                 ) {
                     items(state.medicines){
                             medicine ->
-                        MedicineCardSmall(medicine = medicine, navController = navController)
+                        MedicineCardSmall(medicine = medicine, kit = viewModel.kitId ?: -1, navController = navController)
                     }
                 }
             }
@@ -174,7 +174,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
 }
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun MedicineCardSmall(medicine: Medicine, navController: NavController) {
+fun MedicineCardSmall(medicine: Medicine, kit: Int, navController: NavController) {
     val sdf = SimpleDateFormat("dd.MM.yyyy")
     Card(
         shape = RoundedCornerShape(30.dp),
