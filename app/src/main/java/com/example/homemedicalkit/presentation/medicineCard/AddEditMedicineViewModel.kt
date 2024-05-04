@@ -1,6 +1,5 @@
 package com.example.homemedicalkit.presentation.medicineCard
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -59,7 +58,6 @@ class AddEditMedicineViewModel @Inject constructor(
 
     var currentMedicineId: Int? = null
     init {
-        Log.d("VMCard", savedStateHandler.toString())
         getKits()
         savedStateHandler.get<Int?>("medicineId")?.let{ medicineId ->
             if (medicineId != -1){

@@ -54,8 +54,7 @@ class MedicinesViewModel @Inject constructor(
             }
             is MedicineEvent.DeleteMedicine -> {
                 viewModelScope.launch {
-                    medicineUseCases.deleteMedicine(event.medicine)
-                    recentlyDeletedMedicine = event.medicine
+                    medicineUseCases.deleteMedicine(event.value)
                 }
 
             }

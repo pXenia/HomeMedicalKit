@@ -2,9 +2,10 @@ package com.example.homemedicalkit.presentation.medicinesList
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -165,17 +167,19 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                 ) {
                     items(state.medicines){
                             medicine ->
-                        MedicineCardSmall(medicine = medicine, kit = viewModel.kitId ?: -1, navController = navController)
+                        MedicineCardSmall(medicine = medicine, navController = navController, viewModel = viewModel)
                     }
                 }
             }
         }
     )
 }
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun MedicineCardSmall(medicine: Medicine, kit: Int, navController: NavController) {
+fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewModel: MedicinesViewModel) {
     val sdf = SimpleDateFormat("dd.MM.yyyy")
+    var select = false
     Card(
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
@@ -186,9 +190,19 @@ fun MedicineCardSmall(medicine: Medicine, kit: Int, navController: NavController
             )
             .fillMaxWidth()
             .height(120.dp)
-            .clickable {
-                navController.navigate(
-                    Screen.MedicineCard.route + "?medicineId=${medicine.medicineId}"
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        navController.navigate(
+                            Screen.MedicineCard.route + "?medicineId=${medicine.medicineId}"
+                        )
+
+                    },
+                    onLongPress = {
+                        navController.navigate(
+                            Screen.DeleteDialog.route + "?medicineId=${medicine.medicineId}"
+                        )
+                    }
                 )
             },
         colors = CardDefaults.cardColors(

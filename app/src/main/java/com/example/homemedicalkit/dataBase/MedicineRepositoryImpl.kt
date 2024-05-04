@@ -13,8 +13,8 @@ class MedicineRepositoryImpl(
         return dao.update(medicine)
     }
 
-    override suspend fun delete(medicine: Medicine) {
-        return dao.delete(medicine)
+    override suspend fun delete(medicineId: Int?){
+        return dao.delete(medicineId)
     }
 
     override suspend fun getMedicine(medicineId: Int?): Medicine? {

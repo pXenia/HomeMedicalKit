@@ -9,7 +9,7 @@ interface MedicineRepository {
 
     suspend fun update(medicine: Medicine)
 
-    suspend fun delete(medicine: Medicine)
+    suspend fun delete(medicineId: Int?)
 
     suspend fun getMedicine(medicineId: Int?): Medicine?
 

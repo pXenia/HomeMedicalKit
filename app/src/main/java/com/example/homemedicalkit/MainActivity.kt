@@ -14,6 +14,7 @@ import com.example.homemedicalkit.presentation.kitsScreen.KitsScreen
 import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.KitDialog
 import com.example.homemedicalkit.presentation.medicineCard.MedicineCard
 import com.example.homemedicalkit.presentation.medicinesList.MedicinesList
+import com.example.homemedicalkit.presentation.medicinesList.components.DeleteDialog
 import com.example.homemedicalkit.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -79,6 +80,20 @@ class MainActivity : ComponentActivity() {
                     )
                 ) {
                     KitDialog(navController = navController)
+                }
+                dialog(
+                    route = Screen.DeleteDialog.route + "?medicineId={medicineId}",
+                    arguments = listOf(
+                        navArgument(
+                            name = "medicineId"
+                        ) {
+                            type = NavType.IntType
+                            defaultValue = -1
+                        },
+                    )
+                ) {
+                    val medicineId = it.arguments?.getInt("medicineId") ?: -1
+                    DeleteDialog(medicineId = medicineId , navController = navController)
                 }
             }
         }
