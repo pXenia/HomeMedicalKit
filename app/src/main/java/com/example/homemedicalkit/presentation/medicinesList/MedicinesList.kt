@@ -117,14 +117,14 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                         Text(
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
-                                .padding(start = 30.dp)
+                                .padding(start = 24.dp)
                                 .fillMaxWidth(),
                             text = viewModel.kitName.value,
                             style = TextStyle(
                                 shadow = Shadow(DarkLavender200, blurRadius = 2f),
                                 fontFamily = Comfortaa,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 40.sp,
+                                fontSize = 38.sp,
                                 color = DarkLavender200
                             )
                         )

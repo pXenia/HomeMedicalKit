@@ -5,4 +5,5 @@ data class MedicineUseCases(
     val deleteMedicine: DeleteMedicineUseCase,
     val addMedicine: AddMedicineUseCase,
     val getMedicine: GetMedicineUseCase,
+    val getAllMedicines: GetAllMedicineUseCase
 )

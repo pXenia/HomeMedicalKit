@@ -41,6 +41,10 @@ class MedicinesViewModel @Inject constructor(
                         _kitName.value = kit.kitName
                     }}
             }
+        else {
+            getAllMedicines(MedicineOrder.Date(OrderType.Descending))
+            _kitName.value = "Все\nлекарства"
+        }
     }
     fun onEvent(event: MedicineEvent){
         when(event){
@@ -49,7 +53,11 @@ class MedicinesViewModel @Inject constructor(
                     state.value.medicineOrder.orderType == event.medicineOrder.orderType) {
                     return
                 }
-                kitId?.let { getMedicines(event.medicineOrder, it) }
+                if (kitId != -1){
+                    kitId?.let { getMedicines(event.medicineOrder, it) }
+                }else{
+                    getAllMedicines(event.medicineOrder)
+                }
 
             }
             is MedicineEvent.DeleteMedicine -> {
@@ -83,7 +91,17 @@ class MedicinesViewModel @Inject constructor(
                     medicines = medicines,
                     medicineOrder = medicineOrder
                     )
-
+            }
+            .launchIn(viewModelScope)
+    }
+    private fun getAllMedicines(medicineOrder: MedicineOrder) {
+        getMedicineJob?.cancel()
+        getMedicineJob = medicineUseCases.getAllMedicines(medicineOrder)
+            .onEach { medicines ->
+                _state.value = state.value.copy(
+                    medicines = medicines,
+                    medicineOrder = medicineOrder
+                )
             }
             .launchIn(viewModelScope)
     }
