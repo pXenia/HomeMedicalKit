@@ -19,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = LightBlue1,
+    primary = DarkBlueOutlined,
     secondary = BlueContainer,
     tertiary = LightBlue1,
     background = Color.White,

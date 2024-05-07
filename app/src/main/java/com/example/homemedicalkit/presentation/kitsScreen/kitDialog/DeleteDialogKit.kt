@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.homemedicalkit.presentation.kitsScreen.KitsEvent
 import com.example.homemedicalkit.presentation.kitsScreen.KitsViewModel
+import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueSerface
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
@@ -25,11 +26,11 @@ fun DeleteDialogKit(
     ) {
     AlertDialog(
         containerColor = BlueSerface,
-        onDismissRequest = { },
+        onDismissRequest = {navController.navigateUp()},
         title = {},
         text = {
             Text(
-                "Удалить аптечку?",
+                "Изменить аптечку?",
                 style = TextStyle(
                     textAlign = TextAlign.Center,
                     fontFamily = Comfortaa,
@@ -59,11 +60,12 @@ fun DeleteDialogKit(
         dismissButton = {
             TextButton(
                 {
-                    navController.navigateUp()
+                    navController.navigate(
+                        Screen.KitDialog.route + "?kitId=${kitId}")
                 }
             ) {
                 Text(
-                    text = "Отмена",
+                    text = "Изменить",
                     style = TextStyle(
                         fontFamily = Comfortaa,
                         fontWeight = FontWeight.ExtraBold,

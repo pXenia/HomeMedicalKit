@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -42,8 +44,10 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +67,7 @@ import com.example.homemedicalkit.ui.theme.Blue1
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
+import com.example.homemedicalkit.ui.theme.RedContainerDate
 import com.example.homemedicalkit.ui.theme.YellowContainerFew
 import java.text.SimpleDateFormat
 
@@ -72,6 +77,10 @@ import java.text.SimpleDateFormat
 fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                   navController: NavController) {
     val state = viewModel.state.value
+    val scroll = rememberScrollState()
+    val heightScr = LocalConfiguration.current.screenHeightDp.dp
+    val heightNav = LocalConfiguration.current.navigation.dp
+
     HomeMedicalKitTheme {
         Scaffold(
             bottomBar = { NavigationBarSample(navController = navController) },
@@ -105,11 +114,15 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(10.dp)
+                        .verticalScroll(scroll)
                 ) {
-                    Box {
+                    Box(Modifier.graphicsLayer {
+                    }) {
                         Image(
                             modifier = Modifier
                                 .height(140.dp)
+                                .graphicsLayer {
+                                    alpha = 1f - (scroll.value.toFloat() / scroll.maxValue) }
                                 .align(Alignment.TopEnd),
                             painter = painterResource(id = R.drawable.medicine_amico),
                             contentDescription = ""
@@ -117,14 +130,18 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                         Text(
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
-                                .padding(start = 24.dp)
+                                .padding(start = 20.dp)
+                                .graphicsLayer {
+                                    alpha = 1f - (scroll.value.toFloat() / scroll.maxValue)
+
+                                }
                                 .fillMaxWidth(),
                             text = viewModel.kitName.value,
                             style = TextStyle(
                                 shadow = Shadow(DarkLavender200, blurRadius = 2f),
                                 fontFamily = Comfortaa,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 38.sp,
+                                fontSize = 34.sp,
                                 color = DarkLavender200
                             )
                         )
@@ -134,9 +151,11 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                         onOrderChange = { viewModel.onEvent(MedicineEvent.Order(it)) },
                         medicineOrder = state.medicineOrder
                     )
-                    Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
                     LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(heightScr*0.75f),
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
                         items(state.medicines) { medicine ->
@@ -147,6 +166,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.padding(heightNav + 35.dp))
                 }
             }
         )
@@ -160,6 +180,12 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
     val animatedPadding = animateDpAsState(targetValue = if (toggle.value) 5.dp else 0.dp,
         label = "padding",
     )
+    val color =
+        if (medicine.medicineDate < System.currentTimeMillis())
+        { RedContainerDate }
+        else if (medicine.medicineNumberFew)
+        { YellowContainerFew }
+        else Blue1
     Card(
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
@@ -187,9 +213,7 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                     }
                 )
             },
-        colors = CardDefaults.cardColors(
-            containerColor = if (medicine.medicineNumberFew) YellowContainerFew else Blue1
-        ),
+        colors = CardDefaults.cardColors(color),
     ) {
         Row {
             Image(

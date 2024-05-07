@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueSerface
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
@@ -96,7 +97,7 @@ fun KitDialog(
             TextButton(
                 {
                     viewModel.onEvent(AddEditKitEvent.SaveKit)
-                    navController.navigateUp()
+                    navController.navigate(Screen.KitsScreen.route)
                 }
             ) {
                 Text(
@@ -112,7 +113,7 @@ fun KitDialog(
         dismissButton = {
             TextButton(
                 {
-                    navController.navigateUp()
+                    navController.navigate(Screen.KitsScreen.route)
                 }
             ) {
                 Text(

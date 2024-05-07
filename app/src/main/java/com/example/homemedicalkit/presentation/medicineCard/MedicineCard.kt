@@ -3,7 +3,6 @@ package com.example.homemedicalkit.presentation.medicineCard
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -107,6 +106,8 @@ fun MedicineCard(navController: NavController,
     val fewState = viewModel.medicineFew.value
     val heightScr = LocalConfiguration.current.screenHeightDp.dp
     val heightNav = LocalConfiguration.current.navigation.dp
+    val kitsNames = viewModel.stateKits
+    val kitsIsEmpty = kitsNames.isEmpty()
 
     val scroll = rememberScrollState()
     HomeMedicalKitTheme {
@@ -199,8 +200,13 @@ fun MedicineCard(navController: NavController,
                             FloatingActionButton(
                                 containerColor = LightBlue2,
                                 onClick = {
-                                    viewModel.onEvent(AddEditMedicineEvent.SaveMedicine)
-                                    navController.navigateUp()
+                                    if (!kitsIsEmpty) {
+                                        viewModel.onEvent(AddEditMedicineEvent.SaveMedicine)
+                                        navController.navigateUp()
+                                    }
+                                    else{
+                                        Toast.makeText(context,"Сначала добавьте аптечку!", Toast.LENGTH_LONG).show()
+                                    }
                                 },
                                 shape = CircleShape
                             ) {
@@ -308,6 +314,7 @@ fun MedicineCard(navController: NavController,
 fun DropdownMenuBox(viewModel: AddEditMedicineViewModel) {
 
     val kitsNames = viewModel.stateKits
+    val kitsIsEmpty = kitsNames.isEmpty()
     var expanded = remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
@@ -317,7 +324,8 @@ fun DropdownMenuBox(viewModel: AddEditMedicineViewModel) {
         }
     ) {
         OutlinedTextField(
-            value = kitsNames[viewModel.medicineKit.value] ?: "",
+            enabled = !kitsIsEmpty,
+            value = kitsNames[viewModel.medicineKit.value] ?: kitsNames[1] ?: "",
             onValueChange = {},
             readOnly = true,
             trailingIcon = { TrailingIcon(expanded = expanded.value) },
@@ -341,7 +349,6 @@ fun DropdownMenuBox(viewModel: AddEditMedicineViewModel) {
                         text = item.value,
                         ) },
                     onClick = {
-                        Log.d("Card", kitsNames[viewModel.medicineKit.value]!!)
                         viewModel.onEvent(AddEditMedicineEvent.EnteredKit(item.key))
                         expanded.value = false
                     }

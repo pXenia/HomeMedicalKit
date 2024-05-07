@@ -33,7 +33,7 @@ class AddEditKitViewModel @Inject constructor(
                 viewModelScope.launch {
                     kitUseCases.getKit(kitId)?.also { kit ->
                         currentKitId = kit.kitId
-                        _kitName.value = kitName.value
+                        _kitName.value = kit.kitName
                         _kitColor.value = kit.kitColor
                     }
                 }

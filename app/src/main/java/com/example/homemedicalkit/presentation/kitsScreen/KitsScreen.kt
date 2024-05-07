@@ -223,7 +223,7 @@ fun NavigationBarSample(navController: NavController) {
             onClick = {
                 selectedItem.value = 2
                 navController.navigate(
-                Screen.MedicineCard.route + "?medicineId=${-1}")
+                Screen.MedicineCard.route + "?kitId=${-1}")
             },
             colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
 
