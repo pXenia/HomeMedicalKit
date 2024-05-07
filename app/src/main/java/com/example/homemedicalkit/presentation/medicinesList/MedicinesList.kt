@@ -1,12 +1,11 @@
 package com.example.homemedicalkit.presentation.medicinesList
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,25 +22,26 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -57,137 +56,118 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.dataBase.Medicine
+import com.example.homemedicalkit.presentation.kitsScreen.NavigationBarSample
 import com.example.homemedicalkit.presentation.medicinesList.components.SortParam
 import com.example.homemedicalkit.presentation.util.Screen
-import com.example.homemedicalkit.ui.theme.BlueAFC5F0
+import com.example.homemedicalkit.ui.theme.Blue1
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender100
 import com.example.homemedicalkit.ui.theme.DarkLavender200
-import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
-import com.example.homemedicalkit.ui.theme.WhiteEAEBEC
+import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
+import com.example.homemedicalkit.ui.theme.YellowContainerFew
 import java.text.SimpleDateFormat
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
-                  navController: NavController){
+                  navController: NavController) {
     val state = viewModel.state.value
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier
-                    .size(70.dp)
-                    .padding(5.dp),
-                containerColor = BlueAFC5F0,
-                contentColor = Color.Gray,
-                onClick = { navController.navigate(Screen.MedicineCard.route+"?kitId=${viewModel.kitId}")},
-                shape = CircleShape
-            ) {
-                Icon(Icons.Filled.Add, "Add")
-            }
-        },
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            listOf(LavenderD1D5F0, WhiteEAEBEC)
-                        )
-                    )
-                    .padding(10.dp)
-            ) {
-                Canvas(modifier = Modifier.align(Alignment.End)) {
-                    translate(left = -200f, top = -10f) {
-                        drawCircle(DarkLavender100, radius = 40.dp.toPx())
-                    }
-                    translate(left = -40f, top = 50f) {
-                        drawCircle(BlueAFC5F0, radius = 60.dp.toPx())
-                    }
+    HomeMedicalKitTheme {
+        Scaffold(
+            bottomBar = { NavigationBarSample(navController = navController) },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { navController.navigate(Screen.MedicineCard.route + "?kitId=${viewModel.kitId}") },
+                    shape = CircleShape
+                ) {
+                    Icon(Icons.Filled.Add, "Add")
                 }
-                Canvas(modifier = Modifier.align(Alignment.Start)) {
-                    translate(left = 0f, top = -40f) {
-                        drawCircle(LavenderD1D5F0, radius = 40.dp.toPx())
-                    }
-                }
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(top = 5.dp),
-                    onClick = {navController.navigateUp()}) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBackIosNew,
-                        contentDescription = "Add"
-                    )
-                }
-                Text(
-                    modifier = Modifier
-                        .padding(start = 30.dp, top = 8.dp)
-                        .fillMaxWidth(),
-                    text = viewModel.kitName.value,
-                    style = TextStyle(
-                        shadow = Shadow(DarkLavender200, blurRadius = 2f),
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 40.sp,
-                        color = DarkLavender200
-                    )
+            },
+            topBar = {
+                TopAppBar(
+                    title = { },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                navController.navigateUp()
+                            }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBackIosNew,
+                                contentDescription = "Back"
+                            )
+                        }
+                    },
                 )
-                Spacer(modifier = Modifier.height(30.dp))
-                OutlinedTextField(
+            },
+            content = {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .clip(RoundedCornerShape(30.dp))
-                        .background(LavenderD1D5F0),
-                    shape = RoundedCornerShape(30.dp),
-                    value = "",
-                    onValueChange = {},
-                    placeholder = {
-                        Text("Найти ... ",
+                        .fillMaxSize()
+                        .padding(10.dp)
+                ) {
+                    Box {
+                        Image(
+                            modifier = Modifier
+                                .height(140.dp)
+                                .align(Alignment.TopEnd),
+                            painter = painterResource(id = R.drawable.medicine_amico),
+                            contentDescription = ""
+                        )
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(start = 30.dp)
+                                .fillMaxWidth(),
+                            text = viewModel.kitName.value,
                             style = TextStyle(
-                                textAlign = TextAlign.Center,
+                                shadow = Shadow(DarkLavender200, blurRadius = 2f),
                                 fontFamily = Comfortaa,
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 14.sp,
-                                color = Color.Gray
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 40.sp,
+                                color = DarkLavender200
                             )
                         )
-                    },
-                    leadingIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Filled.Search, "Search", tint = Color.Gray)
-                        }
                     }
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                SortParam(onOrderChange =  {viewModel.onEvent(MedicineEvent.Order(it))}, medicineOrder = state.medicineOrder)
-                Spacer(modifier = Modifier.height(40.dp))
-                LazyColumn( verticalArrangement = Arrangement.spacedBy(15.dp)
-                ) {
-                    items(state.medicines){
-                            medicine ->
-                        MedicineCardSmall(medicine = medicine, navController = navController, viewModel = viewModel)
+                    Spacer(modifier = Modifier.height(30.dp))
+                    SortParam(
+                        onOrderChange = { viewModel.onEvent(MedicineEvent.Order(it)) },
+                        medicineOrder = state.medicineOrder
+                    )
+                    Spacer(modifier = Modifier.height(40.dp))
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(15.dp)
+                    ) {
+                        items(state.medicines) { medicine ->
+                            MedicineCardSmall(
+                                medicine = medicine,
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }
-@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("SimpleDateFormat")
 @Composable
 fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewModel: MedicinesViewModel) {
     val sdf = SimpleDateFormat("dd.MM.yyyy")
-    var select = false
+    val toggle = remember { mutableStateOf(false) }
+    val animatedPadding = animateDpAsState(targetValue = if (toggle.value) 5.dp else 0.dp,
+        label = "padding",
+    )
     Card(
         shape = RoundedCornerShape(30.dp),
         modifier = Modifier
             .shadow(
-                elevation = 18.dp,
-                spotColor = WhiteEAEBEC,
+                elevation = 8.dp,
                 shape = RoundedCornerShape(30.dp)
             )
+            .padding(animatedPadding.value)
             .fillMaxWidth()
             .height(120.dp)
             .pointerInput(Unit) {
@@ -198,7 +178,9 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                         )
 
                     },
+                    onPress = {toggle.value = false},
                     onLongPress = {
+                        toggle.value = true
                         navController.navigate(
                             Screen.DeleteDialog.route + "?medicineId=${medicine.medicineId}"
                         )
@@ -206,7 +188,7 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                 )
             },
         colors = CardDefaults.cardColors(
-            containerColor = LavenderD1D5F0
+            containerColor = if (medicine.medicineNumberFew) YellowContainerFew else Blue1
         ),
     ) {
         Row {
@@ -218,8 +200,7 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                     .width(160.dp)
                     .padding(8.dp)
                     .clip(RoundedCornerShape(30.dp))
-                    .paint(painter = painterResource(id = R.drawable.test_medicine))
-                    .shadow(elevation = 10.dp),
+                    .paint(painter = painterResource(id = R.drawable.thermometer)),
                 contentScale = ContentScale.Crop
             )
             Column(
@@ -231,17 +212,19 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                     text = medicine.medicineName,
                     modifier = Modifier.fillMaxWidth(),
                     style = TextStyle(
-                        fontSize = 16.sp,
                         fontFamily = Comfortaa,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
                         textAlign = TextAlign.Center
                     )
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = sdf.format(medicine.medicineDate),
                     modifier = Modifier.fillMaxWidth(),
                     style = TextStyle(
-                        fontSize = 14.sp,
                         fontFamily = Comfortaa,
+                        fontSize = 14.sp,
                         textAlign = TextAlign.Center
                     )
                 )
@@ -249,3 +232,4 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
         }
     }
 }
+

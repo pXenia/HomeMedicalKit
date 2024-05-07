@@ -26,11 +26,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.homemedicalkit.presentation.medicineCard.AddEditMedicineEvent
 import com.example.homemedicalkit.presentation.medicineCard.AddEditMedicineViewModel
+import com.example.homemedicalkit.ui.theme.Blue1
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -44,14 +43,14 @@ fun DateAlertDialog(viewModel: AddEditMedicineViewModel) {
     val sdf = SimpleDateFormat("dd.MM.yyyy")
     OutlinedTextField(
         modifier = Modifier
-            .height(48.dp)
+            .height(52.dp)
             .width(150.dp)
-            .clip(RoundedCornerShape(30.dp))
-            .background(LavenderD1D5F0),
-        shape = RoundedCornerShape(30.dp),
+            .clip(RoundedCornerShape(20.dp))
+            .background(Blue1),
+        shape = RoundedCornerShape(20.dp),
         value = if (dateState != 0L) sdf.format(dateState) else "",
         readOnly = true,
-        maxLines = 1,
+        singleLine = true,
         onValueChange = {},
         placeholder = {
             Text("01.01.2024",
@@ -59,8 +58,6 @@ fun DateAlertDialog(viewModel: AddEditMedicineViewModel) {
                     textAlign = TextAlign.Center,
                     fontFamily = Comfortaa,
                     fontWeight = FontWeight.ExtraBold,
-                    fontSize = 14.sp,
-                    color = Color.Gray
                 )
             )
         },

@@ -28,11 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.homemedicalkit.ui.theme.BlueSerface
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender200
+import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 import com.example.homemedicalkit.ui.theme.Green80
-import com.example.homemedicalkit.ui.theme.LavenderD1D5F0
+import com.example.homemedicalkit.ui.theme.LightPurple80
+import com.example.homemedicalkit.ui.theme.Orange80
 import com.example.homemedicalkit.ui.theme.Red80
+import com.example.homemedicalkit.ui.theme.Turquoise80
 import com.example.homemedicalkit.ui.theme.Yellow80
 
 @Composable
@@ -41,7 +44,7 @@ fun KitDialog(
     viewModel: AddEditKitViewModel = hiltViewModel(),
 ) {
     AlertDialog(
-        containerColor = LavenderD1D5F0,
+        containerColor = BlueSerface,
         onDismissRequest = { navController.navigateUp() },
         title = {
             Text(
@@ -51,7 +54,7 @@ fun KitDialog(
                     fontFamily = Comfortaa,
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 20.sp,
-                    color = DarkLavender200
+                    color = DarkBlueOutlined
                 )
             )
         },
@@ -61,14 +64,14 @@ fun KitDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    items(3) {
+                    items(7) {
                         ColorPicker(colorId = it, viewModel = viewModel)
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     modifier = Modifier
-                        .background(LavenderD1D5F0),
+                        .background(Color.Transparent),
                     shape = RoundedCornerShape(15.dp),
                     value = viewModel.kitName.value,
                     onValueChange = {
@@ -82,7 +85,7 @@ fun KitDialog(
                                 fontFamily = Comfortaa,
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 14.sp,
-                                color = Color.Gray
+                                color = DarkBlueOutlined
                             )
                         )
                     }
@@ -101,7 +104,7 @@ fun KitDialog(
                     style = TextStyle(
                         fontFamily = Comfortaa,
                         fontWeight = FontWeight.ExtraBold,
-                        color = DarkLavender200
+                        color = DarkBlueOutlined
                     )
                 )
             }
@@ -117,7 +120,7 @@ fun KitDialog(
                     style = TextStyle(
                         fontFamily = Comfortaa,
                         fontWeight = FontWeight.ExtraBold,
-                        color = DarkLavender200
+                        color = DarkBlueOutlined
                     )
                 )
             }
@@ -129,7 +132,7 @@ fun KitDialog(
 
 @Composable
 fun ColorPicker(colorId: Int, viewModel: AddEditKitViewModel){
-    val colors = listOf(Red80, Yellow80, Green80)
+    val colors = listOf(Red80, Yellow80, Green80, Orange80, Yellow80, LightPurple80, Turquoise80)
 OutlinedCard(
     modifier = Modifier
         .size(32.dp)
@@ -138,7 +141,7 @@ OutlinedCard(
         },
     shape = CircleShape,
     border = BorderStroke(2.dp, (if (viewModel.kitColor.value == colorId) {
-        DarkLavender200
+        DarkBlueOutlined
     } else Color.Transparent)),
     colors = CardDefaults.cardColors(colors[colorId])
 ) {}
