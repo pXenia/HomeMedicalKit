@@ -1,7 +1,6 @@
 package com.example.homemedicalkit.dataBase
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
@@ -9,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface KitDao {
     @Upsert
     suspend fun insert(kit: Kit)
-    @Delete
-    suspend fun delete(kit: Kit)
+    @Query("DELETE FROM kits_table WHERE kitId = :kitId")
+    suspend fun delete(kitId: Int?)
     @Query("SELECT * FROM kits_table WHERE kitId = :kitId")
     suspend fun getKit(kitId: Int?): Kit?
     @Query("SELECT * FROM kits_table ORDER BY kitId ASC")

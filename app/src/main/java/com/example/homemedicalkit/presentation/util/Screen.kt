@@ -6,5 +6,7 @@ sealed class Screen(val route: String) {
     object KitsScreen: Screen("kits_screen")
     object KitDialog: Screen("kit_dialog")
     object DeleteDialog: Screen("delete_dialog")
+    object DeleteDialogKit: Screen("delete_dialog_kit")
+
 
 }

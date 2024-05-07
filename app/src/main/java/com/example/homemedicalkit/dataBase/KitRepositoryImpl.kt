@@ -10,8 +10,8 @@ class KitRepositoryImpl(
         return dao.insert(kit)
     }
 
-    override suspend fun delete(kit: Kit) {
-        return dao.delete(kit)
+    override suspend fun delete(kitId: Int?) {
+        return dao.delete(kitId)
     }
 
     override fun getAll(): Flow<List<Kit>> {

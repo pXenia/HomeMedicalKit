@@ -11,6 +11,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.homemedicalkit.presentation.kitsScreen.KitsScreen
+import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.DeleteDialogKit
 import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.KitDialog
 import com.example.homemedicalkit.presentation.medicineCard.MedicineCard
 import com.example.homemedicalkit.presentation.medicinesList.MedicinesList
@@ -94,6 +95,20 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val medicineId = it.arguments?.getInt("medicineId") ?: -1
                     DeleteDialog(medicineId = medicineId , navController = navController)
+                }
+                dialog(
+                    route = Screen.DeleteDialogKit.route + "?kitId={kitId}",
+                    arguments = listOf(
+                        navArgument(
+                            name = "kitId"
+                        ) {
+                            type = NavType.IntType
+                            defaultValue = -1
+                        },
+                    )
+                ) {
+                    val kitId = it.arguments?.getInt("kitId") ?: -1
+                    DeleteDialogKit(kitId = kitId , navController = navController)
                 }
             }
         }

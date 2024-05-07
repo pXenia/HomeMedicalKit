@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
@@ -248,11 +249,20 @@ fun CardKit(kit: Kit, navController : NavController){
             .height(200.dp)
             .width(180.dp)
             .clip(RoundedCornerShape(40.dp))
-            .clickable {
-                navController.navigate(
-                    Screen.MedicinesList.route + "?kitId=${kit.kitId}"
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        navController.navigate(
+                            Screen.MedicinesList.route + "?kitId=${kit.kitId}"                        )
+
+                    },
+                    onLongPress = {
+                        navController.navigate(
+                            Screen.DeleteDialogKit.route + "?kitId=${kit.kitId}"
+                        )
+                    }
                 )
-            }
+            },
     ) {
         Column(
             modifier = Modifier

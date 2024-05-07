@@ -28,7 +28,7 @@ class KitsViewModel@Inject constructor(
         when (event) {
             is KitsEvent.DeleteKit -> {
                 viewModelScope.launch {
-                    kitUseCases.deleteKit(event.kit)
+                    kitUseCases.deleteKit(event.kitId)
                 }
             }
         }
