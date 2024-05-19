@@ -58,14 +58,14 @@ class AddEditKitViewModel @Inject constructor(
                                 kitId = currentKitId
                             )
                         )
-                        _eventFlow.emit(UiEvent.SaveNote)
+                        _eventFlow.emit(UiEvent.SaveMedicine)
                     } catch(e: Exception){}
                 }
             }
         }
     }
     sealed class UiEvent {
-        object SaveNote: UiEvent()
+        object SaveMedicine: UiEvent()
     }
 
 }

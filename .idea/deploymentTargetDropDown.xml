@@ -2,21 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Demo_ExposedDropdownMenuBox">
-        <State />
-      </entry>
-      <entry key="HeadPage">
-        <State />
-      </entry>
-      <entry key="KitsScreen">
-        <State />
-      </entry>
-      <entry key="MedicineCard">
-        <State />
-      </entry>
-      <entry key="MedicineCard (1)">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>

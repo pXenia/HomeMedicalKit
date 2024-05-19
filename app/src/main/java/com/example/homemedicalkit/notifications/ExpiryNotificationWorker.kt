@@ -55,12 +55,12 @@ class ExpiryNotificationWorker @AssistedInject constructor(
             notificationManager.createNotificationChannel(channel)
         }
 
-        val medicineNames = expiredMedicines.joinToString(", ") { it.medicineName }
+        val medicineNames = expiredMedicines.joinToString("") { it.medicineName }
 
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setContentTitle("Срок годности лекарств")
             .setContentText("Истекает срок годности: $medicineNames")
-            .setSmallIcon(R.drawable.first_aid_kit_bro) // Ensure this drawable exists
+            .setSmallIcon(R.mipmap.icon_home_medkit_round) // Ensure this drawable exists
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 

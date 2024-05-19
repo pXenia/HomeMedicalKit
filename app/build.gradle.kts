@@ -56,6 +56,7 @@ android {
 dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.hilt:hilt-work:1.2.0")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     val room_version = "2.5.0"
     implementation ("androidx.room:room-ktx:$room_version")
     implementation("androidx.core:core-ktx:1.9.0")
@@ -90,6 +91,13 @@ dependencies {
     implementation ("androidx.compose.material3:material3:1.2.1")
     implementation("io.coil-kt:coil-compose:2.4.0")
 
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("org.mockito:mockito-core:4.2.0")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    testImplementation ("com.google.truth:truth:1.1.3")
+    testImplementation ("io.mockk:mockk:1.13.1")
 }
 kapt {
     correctErrorTypes = true

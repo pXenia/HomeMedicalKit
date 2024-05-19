@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
         val now = Calendar.getInstance()
         val targetTime = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 12)
-            set(Calendar.MINUTE, 0)
+            set(Calendar.MINUTE, 6)
             set(Calendar.SECOND, 0)
         }
 

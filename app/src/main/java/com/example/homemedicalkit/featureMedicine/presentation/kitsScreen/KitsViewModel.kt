@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class KitsViewModel@Inject constructor(
-    private val kitUseCases: KitUseCases
+    val kitUseCases: KitUseCases
 ): ViewModel() {
     private val _state = mutableStateOf(KitState())
     val state: State<KitState> = _state
@@ -34,7 +34,7 @@ class KitsViewModel@Inject constructor(
         }
     }
 
-    private fun getKits() {
+    fun getKits() {
         getKitsJob?.cancel()
         getKitsJob = kitUseCases.getKits()
             .onEach { kits ->
