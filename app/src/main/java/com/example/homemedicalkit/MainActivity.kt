@@ -1,15 +1,24 @@
 
 package com.example.homemedicalkit
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.homemedicalkit.notifications.ExpiryNotificationWorker
 import com.example.homemedicalkit.presentation.kitsScreen.KitsScreen
 import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.DeleteDialogKit
 import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.KitDialog
@@ -19,11 +28,19 @@ import com.example.homemedicalkit.presentation.medicinesList.components.DeleteDi
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var workManager: WorkManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             HomeMedicalKitTheme {
                 val navController = rememberNavController()
@@ -116,6 +133,31 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+
+        setupPeriodicWork()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission()
+        }
+    }
+
+    private fun setupPeriodicWork() {
+        val workRequest = PeriodicWorkRequestBuilder<ExpiryNotificationWorker>(15, TimeUnit.MINUTES)
+            .build()
+
+        workManager.enqueueUniquePeriodicWork(
+            "ExpiryNotificationWork",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            workRequest
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestNotificationPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
         }
     }
 }

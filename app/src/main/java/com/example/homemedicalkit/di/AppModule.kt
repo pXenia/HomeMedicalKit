@@ -1,26 +1,31 @@
 package com.example.homemedicalkit.di
 
 import android.app.Application
+import android.content.Context
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.room.Room
-import com.example.homemedicalkit.dataBase.KitRepository
-import com.example.homemedicalkit.dataBase.KitRepositoryImpl
-import com.example.homemedicalkit.dataBase.MedicalKitDatabase
-import com.example.homemedicalkit.dataBase.MedicineRepository
-import com.example.homemedicalkit.dataBase.MedicineRepositoryImpl
-import com.example.homemedicalkit.dataBase.useCase.AddKitUseCase
-import com.example.homemedicalkit.dataBase.useCase.AddMedicineUseCase
-import com.example.homemedicalkit.dataBase.useCase.DeleteKitUseCase
-import com.example.homemedicalkit.dataBase.useCase.DeleteMedicineUseCase
-import com.example.homemedicalkit.dataBase.useCase.GetAllMedicineUseCase
-import com.example.homemedicalkit.dataBase.useCase.GetKitUseCase
-import com.example.homemedicalkit.dataBase.useCase.GetKitsUseCase
-import com.example.homemedicalkit.dataBase.useCase.GetMedicineUseCase
-import com.example.homemedicalkit.dataBase.useCase.GetMedicinesUseCase
-import com.example.homemedicalkit.dataBase.useCase.KitUseCases
-import com.example.homemedicalkit.dataBase.useCase.MedicineUseCases
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import com.example.homemedicalkit.featureMedicine.data.dataSourse.MedicalKitDatabase
+import com.example.homemedicalkit.featureMedicine.data.repository.KitRepositoryImpl
+import com.example.homemedicalkit.featureMedicine.data.repository.MedicineRepositoryImpl
+import com.example.homemedicalkit.featureMedicine.domain.repository.KitRepository
+import com.example.homemedicalkit.featureMedicine.domain.repository.MedicineRepository
+import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.AddKitUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.DeleteKitUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.GetKitUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.GetKitsUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.KitUseCases
+import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.AddMedicineUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.DeleteMedicineUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.GetAllMedicineUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.GetMedicineUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.GetMedicinesUseCase
+import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.MedicineUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -29,7 +34,7 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideMedicalKitDatabase(app:Application): MedicalKitDatabase{
+    fun provideMedicalKitDatabase(app:Application): MedicalKitDatabase {
        return  Room.databaseBuilder(
            app,
            MedicalKitDatabase::class.java,
@@ -38,16 +43,16 @@ object AppModule {
     }
     @Provides
     @Singleton
-    fun provideMedicineRepository(db:MedicalKitDatabase): MedicineRepository{
+    fun provideMedicineRepository(db: MedicalKitDatabase): MedicineRepository {
         return MedicineRepositoryImpl(db.medicineDao)
     }
     @Provides
     @Singleton
-    fun provideKitRepository(db:MedicalKitDatabase): KitRepository{
+    fun provideKitRepository(db: MedicalKitDatabase): KitRepository {
         return KitRepositoryImpl(db.kitDao)
     }
     @Provides
-    fun provideMedicineUseCases(repository: MedicineRepository):MedicineUseCases{
+    fun provideMedicineUseCases(repository: MedicineRepository): MedicineUseCases {
         return MedicineUseCases(
             getMedicines = GetMedicinesUseCase(repository),
             deleteMedicine = DeleteMedicineUseCase(repository),
@@ -58,12 +63,33 @@ object AppModule {
         )
     }
     @Provides
-    fun provideKitUseCases(repository: KitRepository): KitUseCases{
+    fun provideKitUseCases(repository: KitRepository): KitUseCases {
         return KitUseCases(
             getKits = GetKitsUseCase(repository),
             deleteKit = DeleteKitUseCase(repository),
             addKit = AddKitUseCase(repository),
             getKit = GetKitUseCase(repository),
         )
+    }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+object WorkerModule {
+    @Provides
+    @Singleton
+    fun provideConfiguration(workerFactory: HiltWorkerFactory): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(
+        @ApplicationContext appContext: Context,
+        configuration: Configuration
+    ): WorkManager {
+        WorkManager.initialize(appContext, configuration)
+        return WorkManager.getInstance(appContext)
     }
 }
