@@ -15,8 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.homemedicalkit.notifications.ExpiryNotificationWorker
 import com.example.homemedicalkit.presentation.kitsScreen.KitsScreen
@@ -28,6 +28,7 @@ import com.example.homemedicalkit.presentation.medicinesList.components.DeleteDi
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -143,15 +144,25 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setupPeriodicWork() {
-        val workRequest = PeriodicWorkRequestBuilder<ExpiryNotificationWorker>(15, TimeUnit.MINUTES)
+        val now = Calendar.getInstance()
+        val targetTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 12)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+
+        val initialDelay = targetTime.timeInMillis - now.timeInMillis
+        val workRequest = OneTimeWorkRequestBuilder<ExpiryNotificationWorker>()
+            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
             .build()
 
-        workManager.enqueueUniquePeriodicWork(
-            "ExpiryNotificationWork",
-            ExistingPeriodicWorkPolicy.REPLACE,
+        workManager.enqueueUniqueWork(
+            "DailyExpiryNotificationWork",
+            ExistingWorkPolicy.REPLACE,
             workRequest
         )
     }
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestNotificationPermission() {
