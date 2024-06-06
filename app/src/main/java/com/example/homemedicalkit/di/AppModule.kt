@@ -1,11 +1,7 @@
 package com.example.homemedicalkit.di
 
 import android.app.Application
-import android.content.Context
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.room.Room
-import androidx.work.Configuration
-import androidx.work.WorkManager
 import com.example.homemedicalkit.featureMedicine.data.dataSourse.MedicalKitDatabase
 import com.example.homemedicalkit.featureMedicine.data.repository.KitRepositoryImpl
 import com.example.homemedicalkit.featureMedicine.data.repository.MedicineRepositoryImpl
@@ -25,7 +21,6 @@ import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.Medici
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -70,26 +65,5 @@ object AppModule {
             addKit = AddKitUseCase(repository),
             getKit = GetKitUseCase(repository),
         )
-    }
-}
-@Module
-@InstallIn(SingletonComponent::class)
-object WorkerModule {
-    @Provides
-    @Singleton
-    fun provideConfiguration(workerFactory: HiltWorkerFactory): Configuration {
-        return Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideWorkManager(
-        @ApplicationContext appContext: Context,
-        configuration: Configuration
-    ): WorkManager {
-        WorkManager.initialize(appContext, configuration)
-        return WorkManager.getInstance(appContext)
     }
 }

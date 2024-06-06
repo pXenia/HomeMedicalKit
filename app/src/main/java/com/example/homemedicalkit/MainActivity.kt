@@ -1,6 +1,10 @@
 
 package com.example.homemedicalkit
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -15,10 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import com.example.homemedicalkit.notifications.ExpiryNotificationWorker
+import com.example.homemedicalkit.notifications.ExpiryNotificationReceiver
 import com.example.homemedicalkit.presentation.kitsScreen.KitsScreen
 import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.DeleteDialogKit
 import com.example.homemedicalkit.presentation.kitsScreen.kitDialog.KitDialog
@@ -29,19 +30,14 @@ import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var workManager: WorkManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             HomeMedicalKitTheme {
                 val navController = rememberNavController()
@@ -136,33 +132,36 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        setupPeriodicWork()
+        setupDailyAlarm()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestNotificationPermission()
         }
     }
 
-    private fun setupPeriodicWork() {
-        val now = Calendar.getInstance()
-        val targetTime = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 12)
-            set(Calendar.MINUTE, 6)
+    private fun setupDailyAlarm() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, ExpiryNotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 8)
+            set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
-        val initialDelay = targetTime.timeInMillis - now.timeInMillis
-        val workRequest = OneTimeWorkRequestBuilder<ExpiryNotificationWorker>()
-            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
-            .build()
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
 
-        workManager.enqueueUniqueWork(
-            "DailyExpiryNotificationWork",
-            ExistingWorkPolicy.REPLACE,
-            workRequest
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
         )
     }
-
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestNotificationPermission() {
