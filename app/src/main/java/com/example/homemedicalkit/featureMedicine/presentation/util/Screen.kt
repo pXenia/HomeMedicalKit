@@ -7,6 +7,8 @@ sealed class Screen(val route: String) {
     object KitDialog: Screen("kit_dialog")
     object DeleteDialog: Screen("delete_dialog")
     object DeleteDialogKit: Screen("delete_dialog_kit")
+    object SignInScreen: Screen("sign_in_screen")
+    object UserScreen: Screen("user_screen")
 
 
 }

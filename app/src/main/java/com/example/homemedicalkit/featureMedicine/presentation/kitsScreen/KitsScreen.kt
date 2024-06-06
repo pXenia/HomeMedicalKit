@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -198,7 +199,7 @@ fun NavigationBarSample(navController: NavController) {
         tonalElevation = 10.dp
     ) {
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.CreateNewFolder, "New folder") },
+            icon = { Icon(Icons.Filled.CreateNewFolder, null) },
             label = { Text("Аптечки") },
             selected = selectedItem.value == 0,
             onClick = {
@@ -207,8 +208,8 @@ fun NavigationBarSample(navController: NavController) {
             colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.FormatListNumbered, "New folder") },
-            label = { Text("Все лекарства") },
+            icon = { Icon(Icons.Filled.FormatListNumbered, null) },
+            label = { Text("Лекарства") },
             selected = selectedItem.value == 1,
             onClick = {
                 selectedItem.value = 1
@@ -217,7 +218,7 @@ fun NavigationBarSample(navController: NavController) {
 
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.AddCircleOutline, "New folder") },
+            icon = { Icon(Icons.Filled.AddCircleOutline, null) },
             label = { Text("Добавить") },
             selected = selectedItem.value == 2,
             onClick = {
@@ -227,6 +228,17 @@ fun NavigationBarSample(navController: NavController) {
             },
             colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
 
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Filled.Person, null)},
+            label = { Text("Профиль") },
+            selected = selectedItem.value == 3,
+            onClick = {
+                selectedItem.value = 3
+                navController.navigate(
+                    Screen.UserScreen.route)
+            },
+            colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
         )
 
     }

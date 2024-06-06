@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -83,7 +84,7 @@ dependencies {
     kapt ("androidx.hilt:hilt-compiler:1.0.0")
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
 
-// Compose dependencies
+
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation ("androidx.navigation:navigation-compose:2.7.7")
     implementation ("androidx.compose.material:material-icons-extended:1.6.4")
@@ -98,6 +99,11 @@ dependencies {
     testImplementation ("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("com.google.truth:truth:1.1.3")
     testImplementation ("io.mockk:mockk:1.13.1")
+
+
+    implementation ("com.google.firebase:firebase-auth-ktx:23.0.0")
+    implementation ("com.google.android.gms:play-services-auth:21.2.0")
+
 }
 kapt {
     correctErrorTypes = true
