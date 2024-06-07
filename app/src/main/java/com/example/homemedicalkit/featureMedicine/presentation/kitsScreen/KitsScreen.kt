@@ -68,20 +68,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.homemedicalkit.R
 import com.example.homemedicalkit.featureMedicine.domain.model.Kit
+import com.example.homemedicalkit.featureMedicine.presentation.kitsScreen.components.getColorById
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.Blue1
 import com.example.homemedicalkit.ui.theme.BlueContainer
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 import com.example.homemedicalkit.ui.theme.DarkLavender200
-import com.example.homemedicalkit.ui.theme.Green80
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
 import com.example.homemedicalkit.ui.theme.LightBlue1
-import com.example.homemedicalkit.ui.theme.LightPurple80
-import com.example.homemedicalkit.ui.theme.Orange80
-import com.example.homemedicalkit.ui.theme.Red80
-import com.example.homemedicalkit.ui.theme.Turquoise80
-import com.example.homemedicalkit.ui.theme.Yellow80
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -247,7 +242,6 @@ fun NavigationBarSample(navController: NavController) {
 
 @Composable
 fun CardKit(kit: Kit, navController : NavController){
-    val colors = listOf(Red80, Yellow80, Green80, Orange80, Yellow80, LightPurple80, Turquoise80)
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Blue1
@@ -286,7 +280,7 @@ fun CardKit(kit: Kit, navController : NavController){
                 .align(Alignment.CenterHorizontally)
             ) {
                 translate(left = 0f, top = 160f) {
-                    drawCircle(colors[kit.kitColor], radius = 55.dp.toPx())
+                    drawCircle(getColorById(kit.kitColor), radius = 55.dp.toPx())
                 }
             }
             Image(

@@ -29,23 +29,26 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideMedicalKitDatabase(app:Application): MedicalKitDatabase {
-       return  Room.databaseBuilder(
-           app,
-           MedicalKitDatabase::class.java,
-           MedicalKitDatabase.DATABASE_NAME
-           ).build()
+    fun provideMedicalKitDatabase(app: Application): MedicalKitDatabase {
+        return Room.databaseBuilder(
+            app,
+            MedicalKitDatabase::class.java,
+            MedicalKitDatabase.DATABASE_NAME
+        ).build()
     }
+
     @Provides
     @Singleton
     fun provideMedicineRepository(db: MedicalKitDatabase): MedicineRepository {
         return MedicineRepositoryImpl(db.medicineDao)
     }
+
     @Provides
     @Singleton
     fun provideKitRepository(db: MedicalKitDatabase): KitRepository {
         return KitRepositoryImpl(db.kitDao)
     }
+
     @Provides
     fun provideMedicineUseCases(repository: MedicineRepository): MedicineUseCases {
         return MedicineUseCases(
@@ -57,6 +60,7 @@ object AppModule {
 
         )
     }
+
     @Provides
     fun provideKitUseCases(repository: KitRepository): KitUseCases {
         return KitUseCases(

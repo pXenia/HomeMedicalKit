@@ -21,7 +21,7 @@ import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 @Composable
 fun DeleteDialogKit(
     kitId: Int,
-    navController:  NavController,
+    navController: NavController,
     viewModel: KitsViewModel = hiltViewModel(),
     ) {
     AlertDialog(

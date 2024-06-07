@@ -10,16 +10,16 @@ data class Medicine(
     @PrimaryKey(autoGenerate = true)
     var medicineId: Int? = null,
     @ColumnInfo(name = "name")
-    var medicineName: String = "",
+    var medicineName: String,
     @ColumnInfo(name = "date")
-    var medicineDate: Long = 0L,
+    var medicineDate: Long,
     @ColumnInfo(name = "kit")
-    var medicineKit: Int = -1,
+    var medicineKit: Int,
     @ColumnInfo(name = "few")
-    var medicineNumberFew: Boolean = false,
+    var medicineNumberFew: Boolean,
     @ColumnInfo(name = "image")
-    var medicineImage: String = "",
+    var medicineImage: String,
     @ColumnInfo(name = "description")
-    var medicineDescription: String = "")
+    var medicineDescription: String)
 
 class InvalidMedicineException(message: String): Exception(message)

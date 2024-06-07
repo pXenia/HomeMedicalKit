@@ -44,7 +44,7 @@ class ExpiryNotificationReceiver : BroadcastReceiver() {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationId = 1
         val channelId = "expiry_channel"
-        val channelName = "Expiry Notification"
+        val channelName = "Уведомление об истечении срока годности"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)

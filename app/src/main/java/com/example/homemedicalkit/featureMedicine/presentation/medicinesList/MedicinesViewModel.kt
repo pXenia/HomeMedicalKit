@@ -66,20 +66,6 @@ class MedicinesViewModel @Inject constructor(
                 }
 
             }
-            is MedicineEvent.RestoreMedicine -> {
-                viewModelScope.launch {
-                    medicineUseCases.addMedicine(recentlyDeletedMedicine?: return@launch)
-                    recentlyDeletedMedicine = null
-                }
-
-
-            }
-            is MedicineEvent.ToggleOrderSection -> {
-                _state.value = state.value.copy(
-                    isOrderSectionVisible = !state.value.isOrderSectionVisible
-                )
-
-            }
         }
     }
 

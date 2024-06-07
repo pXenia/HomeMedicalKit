@@ -234,7 +234,7 @@ fun MedicineCard(navController: NavController,
                                     .background(Color.Transparent),
                                 shape = RoundedCornerShape(20.dp),
                                 singleLine = true,
-                                value = nameState.text,
+                                value = nameState,
                                 onValueChange = {
                                     viewModel.onEvent(AddEditMedicineEvent.EnteredName(it))
                                 },
@@ -281,7 +281,7 @@ fun MedicineCard(navController: NavController,
                                 .clip(RoundedCornerShape(20.dp))
                                 .background(Color.Transparent),
                             shape = RoundedCornerShape(20.dp),
-                            value = descriptionState.text,
+                            value = descriptionState,
                             maxLines = 14,
                             onValueChange = {
                                 viewModel.onEvent(AddEditMedicineEvent.EnteredDescription(it))

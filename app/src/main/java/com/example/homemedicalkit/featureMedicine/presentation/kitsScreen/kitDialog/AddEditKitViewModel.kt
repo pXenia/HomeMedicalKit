@@ -24,9 +24,6 @@ class AddEditKitViewModel @Inject constructor(
     private val _kitColor = mutableStateOf(0)
     val kitColor: State<Int> = _kitColor
     private var currentKitId: Int? = null
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
     init {
         savedStateHandle.get<Int>("kitId")?.let { kitId ->
             if(kitId != -1) {
@@ -58,14 +55,10 @@ class AddEditKitViewModel @Inject constructor(
                                 kitId = currentKitId
                             )
                         )
-                        _eventFlow.emit(UiEvent.SaveMedicine)
                     } catch(e: Exception){}
                 }
             }
         }
-    }
-    sealed class UiEvent {
-        object SaveMedicine: UiEvent()
     }
 
 }

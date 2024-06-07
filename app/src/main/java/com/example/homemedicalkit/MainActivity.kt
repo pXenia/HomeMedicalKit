@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                             if(state.value.isSignInSuccessful) {
                                 Toast.makeText(
                                     applicationContext,
-                                    "Sign in successful",
+                                    "Вход выполнен",
                                     Toast.LENGTH_LONG
                                 ).show()
 

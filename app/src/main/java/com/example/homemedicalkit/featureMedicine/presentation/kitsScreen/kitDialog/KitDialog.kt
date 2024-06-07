@@ -28,16 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.homemedicalkit.featureMedicine.presentation.kitsScreen.components.getColorById
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueSerface
 import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
-import com.example.homemedicalkit.ui.theme.Green80
-import com.example.homemedicalkit.ui.theme.LightPurple80
-import com.example.homemedicalkit.ui.theme.Orange80
-import com.example.homemedicalkit.ui.theme.Red80
-import com.example.homemedicalkit.ui.theme.Turquoise80
-import com.example.homemedicalkit.ui.theme.Yellow80
 
 @Composable
 fun KitDialog(
@@ -133,7 +128,6 @@ fun KitDialog(
 
 @Composable
 fun ColorPicker(colorId: Int, viewModel: AddEditKitViewModel){
-    val colors = listOf(Red80, Yellow80, Green80, Orange80, Yellow80, LightPurple80, Turquoise80)
 OutlinedCard(
     modifier = Modifier
         .size(32.dp)
@@ -144,6 +138,6 @@ OutlinedCard(
     border = BorderStroke(2.dp, (if (viewModel.kitColor.value == colorId) {
         DarkBlueOutlined
     } else Color.Transparent)),
-    colors = CardDefaults.cardColors(colors[colorId])
+    colors = CardDefaults.cardColors(getColorById(colorId))
 ) {}
 }

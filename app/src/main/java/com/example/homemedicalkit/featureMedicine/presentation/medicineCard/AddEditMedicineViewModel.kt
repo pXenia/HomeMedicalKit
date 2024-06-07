@@ -10,7 +10,6 @@ import com.example.homemedicalkit.featureMedicine.domain.model.Medicine
 import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.KitUseCases
 import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.MedicineUseCases
 import com.example.homemedicalkit.presentation.medicinesList.MedicineImageState
-import com.example.homemedicalkit.presentation.medicinesList.MedicineTextFieldStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,8 +27,8 @@ class AddEditMedicineViewModel @Inject constructor(
 ): ViewModel() {
     private var getKitsJob: Job? = null
 
-    private val _medicineName = mutableStateOf(MedicineTextFieldStates())
-    val medicineName: State<MedicineTextFieldStates> = _medicineName
+    private val _medicineName = mutableStateOf("")
+    val medicineName: State<String> = _medicineName
 
     private val _medicineDate = mutableStateOf(0L)
     val medicineDate: State<Long> = _medicineDate
@@ -37,8 +36,8 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineFew = mutableStateOf(false)
     val medicineFew: State<Boolean> = _medicineFew
 
-    private val _medicineTags = mutableStateOf(MedicineTextFieldStates())
-    val medicineTags: State<MedicineTextFieldStates> = _medicineTags
+    private val _medicineTags = mutableStateOf("")
+    val medicineTags: State<String> = _medicineTags
 
     private val _medicineKit = mutableStateOf( savedStateHandler.get<Int>("kitId") ?: -1)
     val medicineKit: State<Int> = _medicineKit
@@ -49,12 +48,8 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineImage = mutableStateOf(MedicineImageState(imageUri = ""))
     val medicineImage: State<MedicineImageState> = _medicineImage
 
-    private val _medicineDescription = mutableStateOf(MedicineTextFieldStates())
-    val medicineDescription: State<MedicineTextFieldStates> = _medicineDescription
-
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _medicineDescription = mutableStateOf("")
+    val medicineDescription: State<String> = _medicineDescription
 
     var currentMedicineId: Int? = null
     init {
@@ -64,16 +59,9 @@ class AddEditMedicineViewModel @Inject constructor(
                 viewModelScope.launch {
                     medicineUseCases.getMedicine(medicineId)?.also {  medicine ->
                         currentMedicineId = medicine.medicineId
-                        _medicineName.value = medicineName.value.copy(
-                            text = medicine.medicineName,
-                            isHintVisible = false
-                        )
+                        _medicineName.value =  medicine.medicineName
                         _medicineDate.value = medicine.medicineDate
-
-                        _medicineDescription.value = medicineDescription.value.copy(
-                            text = medicine.medicineDescription,
-                            isHintVisible = false
-                        )
+                        _medicineDescription.value = medicine.medicineDescription
                         _medicineFew.value = medicine.medicineNumberFew
                         _medicineImage.value = medicineImage.value.copy(
                             imageUri = medicine.medicineImage
@@ -87,23 +75,13 @@ class AddEditMedicineViewModel @Inject constructor(
     fun onEvent(event: AddEditMedicineEvent){
         when(event){
             is AddEditMedicineEvent.EnteredName ->{
-                _medicineName.value = medicineName.value.copy(
-                    text = event.value
-                )
-            }
-            is AddEditMedicineEvent.ChangeFocusName ->{
-                _medicineName.value = medicineName.value.copy(
-                    isHintVisible = !event.focusState.isFocused &&
-                            medicineName.value.text.isBlank()
-                )
+                _medicineName.value = event.value
             }
             is AddEditMedicineEvent.EnteredDate ->{
                 _medicineDate.value = event.value
             }
             is AddEditMedicineEvent.EnteredDescription ->{
-                _medicineDescription.value = medicineDescription.value.copy(
-                    text = event.value
-                )
+                _medicineDescription.value = event.value
             }
             is AddEditMedicineEvent.EnteredMedicineFew -> {
                 _medicineFew.value = !medicineFew.value
@@ -120,23 +98,16 @@ class AddEditMedicineViewModel @Inject constructor(
                     try{
                         medicineUseCases.addMedicine(
                             Medicine(
-                                medicineName = medicineName.value.text,
+                                medicineName = medicineName.value,
                                 medicineDate = medicineDate.value,
-                                medicineDescription = medicineDescription.value.text,
+                                medicineDescription = medicineDescription.value,
                                 medicineKit = medicineKit.value,
                                 medicineNumberFew = medicineFew.value,
                                 medicineImage = medicineImage.value.imageUri,
                                 medicineId = currentMedicineId
                             )
                         )
-                        _eventFlow.emit(UiEvent.SaveMedicine)
-
                     } catch(e: InvalidMedicineException){
-                        _eventFlow.emit(
-                            UiEvent.ShowSnackBar(
-                                message = e.message ?: "Лекарство не сохранено"
-                            )
-                        )
 
                     }
                 }
@@ -153,10 +124,6 @@ class AddEditMedicineViewModel @Inject constructor(
                     _kitsNames[it.kitId!!] = it.kitName
                 }
             }.launchIn(viewModelScope)
-    }
-    sealed class UiEvent{
-        data class ShowSnackBar (val message: String): UiEvent()
-        object SaveMedicine: UiEvent()
     }
 
 }
