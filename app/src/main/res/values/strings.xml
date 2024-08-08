@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Моя аптечка</string>
     <string name="web_client">307782008647-i4cncpmrek7l82tp95840v3ajdjk2u30.apps.googleusercontent.com</string>
+    <string name="kit">Аптечки</string>
+    <string name="medicines">Лекарства</string>
+    <string name="add">Добавить</string>
 </resources>

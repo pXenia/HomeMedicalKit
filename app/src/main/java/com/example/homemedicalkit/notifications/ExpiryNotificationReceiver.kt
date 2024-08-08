@@ -8,8 +8,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.homemedicalkit.R
-import com.example.homemedicalkit.featureMedicine.domain.model.Medicine
-import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.MedicineUseCases
+import com.example.homemedicalkit.feature_medicine.domain.model.Medicine
+import com.example.homemedicalkit.feature_medicine.domain.useCase.medicine.MedicineUseCases
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
