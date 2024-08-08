@@ -31,6 +31,7 @@ class KitsViewModel@Inject constructor(
                     kitUseCases.deleteKit(event.kitId)
                 }
             }
+            else -> {}
         }
     }
 

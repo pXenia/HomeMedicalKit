@@ -112,7 +112,7 @@ fun MedicineCard(navController: NavController,
     val scroll = rememberScrollState()
     HomeMedicalKitTheme {
         Scaffold(
-            bottomBar = { NavigationBarSample(navController = navController) },
+            bottomBar = { NavigationBarSample(navController = navController, selectedItem = 2) },
             topBar = {
                 TopAppBar(
                     title = { },

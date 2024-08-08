@@ -8,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.homemedicalkit.featureMedicine.domain.model.Kit
 import com.example.homemedicalkit.featureMedicine.domain.useCase.kit.KitUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,6 +56,8 @@ class AddEditKitViewModel @Inject constructor(
                     } catch(e: Exception){}
                 }
             }
+
+            else -> {}
         }
     }
 

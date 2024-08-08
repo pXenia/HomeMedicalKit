@@ -44,7 +44,7 @@ fun UserScreen(
 ) {
     HomeMedicalKitTheme {
         Scaffold(
-            bottomBar = { NavigationBarSample(navController = navController) },
+            bottomBar = { NavigationBarSample(navController = navController, selectedItem = 3) },
             topBar = {
                 TopAppBar(
                     title = { },

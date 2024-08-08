@@ -43,8 +43,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -88,7 +86,7 @@ fun KitsScreen(navController: NavController,
     val scroll = rememberScrollState()
     HomeMedicalKitTheme {
         Scaffold(
-            bottomBar = { NavigationBarSample(navController = navController) },
+            bottomBar = { NavigationBarSample(navController = navController, selectedItem = 0) },
             topBar = {
                 TopAppBar(
                     title = { },
@@ -184,8 +182,7 @@ fun KitsScreen(navController: NavController,
 
 
 @Composable
-fun NavigationBarSample(navController: NavController) {
-    var selectedItem = remember { mutableIntStateOf(0) }
+fun NavigationBarSample(navController: NavController, selectedItem: Int) {
     NavigationBar(
         modifier = Modifier
             .alpha(0.9f)
@@ -196,18 +193,16 @@ fun NavigationBarSample(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.CreateNewFolder, null) },
             label = { Text("Аптечки") },
-            selected = selectedItem.value == 0,
+            selected = selectedItem == 0,
             onClick = {
-                selectedItem.value = 0
                 navController.navigate(Screen.KitsScreen.route) },
             colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.FormatListNumbered, null) },
             label = { Text("Лекарства") },
-            selected = selectedItem.value == 1,
+            selected = selectedItem == 1,
             onClick = {
-                selectedItem.value = 1
                 navController.navigate(Screen.MedicinesList.route)},
             colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
 
@@ -215,9 +210,8 @@ fun NavigationBarSample(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.AddCircleOutline, null) },
             label = { Text("Добавить") },
-            selected = selectedItem.value == 2,
+            selected = selectedItem == 2,
             onClick = {
-                selectedItem.value = 2
                 navController.navigate(
                 Screen.MedicineCard.route + "?kitId=${-1}")
             },
@@ -227,9 +221,8 @@ fun NavigationBarSample(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Person, null)},
             label = { Text("Профиль") },
-            selected = selectedItem.value == 3,
+            selected = selectedItem == 3,
             onClick = {
-                selectedItem.value = 3
                 navController.navigate(
                     Screen.UserScreen.route)
             },

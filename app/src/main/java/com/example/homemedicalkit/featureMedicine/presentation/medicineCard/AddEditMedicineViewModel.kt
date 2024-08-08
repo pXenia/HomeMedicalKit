@@ -12,8 +12,6 @@ import com.example.homemedicalkit.featureMedicine.domain.useCase.medicine.Medici
 import com.example.homemedicalkit.presentation.medicinesList.MedicineImageState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -112,7 +110,7 @@ class AddEditMedicineViewModel @Inject constructor(
                     }
                 }
             }
-
+            else -> {}
         }
     }
 

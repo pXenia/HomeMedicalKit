@@ -83,7 +83,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
 
     HomeMedicalKitTheme {
         Scaffold(
-            bottomBar = { NavigationBarSample(navController = navController) },
+            bottomBar = { NavigationBarSample(navController = navController, selectedItem = 1) },
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = { navController.navigate(Screen.MedicineCard.route + "?kitId=${viewModel.kitId}") },
@@ -155,10 +155,13 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(heightScr*0.75f),
+                            .height(heightScr * 0.75f),
                         verticalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
-                        items(state.medicines) { medicine ->
+                        items(
+                            items = state.medicines,
+                            key = { medicine -> medicine.medicineId ?: -1 }
+                        ) { medicine ->
                             MedicineCardSmall(
                                 medicine = medicine,
                                 navController = navController,
