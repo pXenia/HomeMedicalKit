@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -46,7 +47,10 @@ fun BottomNavigationBar(navController: NavHostController) {
         screens.forEach {item ->
             NavigationBarItem(
                 icon = { Icon(item[1] as ImageVector, null) },
-                label = { Text(stringResource(item[2] as Int)) },
+                label = {
+                    Text(stringResource(item[2] as Int),
+                        style = MaterialTheme.typography.bodySmall
+                ) },
                 selected = selectedItem == screens.indexOf(item),
                 onClick = {
                     selectedItem = screens.indexOf(item)
@@ -57,7 +61,6 @@ fun BottomNavigationBar(navController: NavHostController) {
                 },
                 colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
             )
-
         }
     }
 }

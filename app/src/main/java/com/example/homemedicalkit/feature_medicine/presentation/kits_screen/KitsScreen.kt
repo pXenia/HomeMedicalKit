@@ -24,9 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.CreateNewFolder
-import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,9 +31,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,7 +39,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -54,12 +48,12 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -72,10 +66,8 @@ import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.Blue1
 import com.example.homemedicalkit.ui.theme.BlueContainer
 import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
-import com.example.homemedicalkit.ui.theme.LightBlue1
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -141,7 +133,7 @@ fun KitsScreen(navController: NavHostController,
                                     alpha = 0f + (scroll.value.toFloat() / scroll.maxValue)
                                 }
                                 .padding(top = 10.dp, start = 10.dp),
-                            text = "Моя аптечка",
+                            text = stringResource(R.string.my_first_aid_kit),
                             style = TextStyle(
                                 fontFamily = Comfortaa,
                                 fontWeight = FontWeight.Bold,
@@ -169,7 +161,10 @@ fun KitsScreen(navController: NavHostController,
                         verticalArrangement = Arrangement.spacedBy(20.dp),
                         columns = GridCells.Adaptive(140.dp),
                     ) {
-                        items(state.kits) { kit ->
+                        items(
+                            items = state.kits,
+                            key = { kit -> kit.kitId ?: -1 }
+                        ) { kit ->
                             CardKit(kit = kit, navController = navController)
                         }
                     }
@@ -180,49 +175,8 @@ fun KitsScreen(navController: NavHostController,
     }
 }
 
-
 @Composable
-fun NavigationBarSample(navController: NavController, selectedItem: Int) {
-    NavigationBar(
-        modifier = Modifier
-            .alpha(0.9f)
-            .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)),
-        containerColor = Blue1,
-        tonalElevation = 10.dp
-    ) {
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.CreateNewFolder, null) },
-            label = { Text(stringResource(R.string.kit)) },
-            selected = selectedItem == 0,
-            onClick = {
-                navController.navigate(Screen.KitsScreen.route) },
-            colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.FormatListNumbered, null) },
-            label = { Text(stringResource(R.string.medicines)) },
-            selected = selectedItem == 1,
-            onClick = {
-                navController.navigate(Screen.MedicinesList.route)},
-            colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
-
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.AddCircleOutline, null) },
-            label = { Text(stringResource(R.string.add)) },
-            selected = selectedItem == 2,
-            onClick = {
-                navController.navigate(
-                Screen.MedicineCard.route + "?kitId=${-1}")
-            },
-            colors = NavigationBarItemDefaults.colors(indicatorColor = LightBlue1)
-        )
-    }
-}
-
-
-@Composable
-fun CardKit(kit: Kit, navController : NavController){
+fun CardKit(kit: Kit, navController : NavController) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Blue1
@@ -231,11 +185,11 @@ fun CardKit(kit: Kit, navController : NavController){
             .shadow(
                 elevation = 18.dp,
                 spotColor = DarkLavender200,
-                shape = RoundedCornerShape(40.dp)
+                shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner))
             )
             .height(200.dp)
             .width(180.dp)
-            .clip(RoundedCornerShape(40.dp))
+            .clip(RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)))
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
@@ -258,15 +212,16 @@ fun CardKit(kit: Kit, navController : NavController){
                 .padding(8.dp)
         ) {
             Spacer(modifier = Modifier.height(5.dp))
-            Canvas(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+            Canvas(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
             ) {
-                translate(left = 0f, top = 160f) {
+                translate(top = 160f) {
                     drawCircle(getColorById(kit.kitColor), radius = 55.dp.toPx())
                 }
             }
             Image(
-                bitmap = ImageBitmap.imageResource( R.drawable.drugs),
+                bitmap = ImageBitmap.imageResource(R.drawable.drugs),
                 contentDescription = "",
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -280,16 +235,9 @@ fun CardKit(kit: Kit, navController : NavController){
                     .height(36.dp)
                     .align(Alignment.CenterHorizontally),
                 text = kit.kitName,
-                style = TextStyle(
-                    fontFamily = Comfortaa,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 20.sp,
-                    color = DarkBlueOutlined
-                )
+                style = MaterialTheme.typography.bodyMedium
             )
 
         }
-
     }
 }

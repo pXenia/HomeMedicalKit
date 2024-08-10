@@ -1,21 +1,18 @@
 package com.example.homemedicalkit.presentation.kitsScreen.kitDialog
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.homemedicalkit.R
 import com.example.homemedicalkit.presentation.kitsScreen.KitsEvent
 import com.example.homemedicalkit.presentation.kitsScreen.KitsViewModel
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueSerface
-import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 
 
 @Composable
@@ -30,14 +27,8 @@ fun DeleteDialogKit(
         title = {},
         text = {
             Text(
-                "Изменить аптечку?",
-                style = TextStyle(
-                    textAlign = TextAlign.Center,
-                    fontFamily = Comfortaa,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 18.sp,
-                    color = DarkBlueOutlined
-                )
+                stringResource(R.string.change_the_first_aid_kit),
+                style = MaterialTheme.typography.bodyMedium
             )
         },
         confirmButton = {
@@ -48,12 +39,8 @@ fun DeleteDialogKit(
                 }
             ) {
                 Text(
-                    text = "Удалить",
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = DarkBlueOutlined
-                    )
+                    text = stringResource(R.string.delete),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         },
@@ -65,15 +52,10 @@ fun DeleteDialogKit(
                 }
             ) {
                 Text(
-                    text = "Изменить",
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = DarkBlueOutlined
-                    )
+                    text = stringResource(R.string.change),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         },
     )
-
 }

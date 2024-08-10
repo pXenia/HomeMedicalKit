@@ -9,17 +9,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.homemedicalkit.R
 import com.example.homemedicalkit.feature_medicine.domain.util.MedicineOrder
 import com.example.homemedicalkit.feature_medicine.domain.util.OrderType
-import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkLavender200
 
 
@@ -39,24 +38,7 @@ fun SortParam(medicineOrder: MedicineOrder,
                 }
                 onOrderChange(MedicineOrder.Date(_medicineOrder.orderType))}
         ) {
-            Text(
-                text = "Дата",
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    fontFamily = Comfortaa,
-                    textAlign = TextAlign.Center,
-                    color = if (_medicineOrder is MedicineOrder.Date) DarkLavender200 else Color.Gray
-                )
-            )
-            Icon(
-                modifier = Modifier.height(20.dp),
-                imageVector = if (_medicineOrder.orderType is OrderType.Descending  &&  _medicineOrder is MedicineOrder.Date)
-                    Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                contentDescription = "Add",
-                tint = if (_medicineOrder is MedicineOrder.Date) DarkLavender200 else Color.Gray
-            )
-
-
+            TitleParam(title = R.string.date, medicineOrder = _medicineOrder)
         }
         Row(
             modifier = Modifier.clickable {
@@ -70,22 +52,7 @@ fun SortParam(medicineOrder: MedicineOrder,
                 onOrderChange(MedicineOrder.Name(_medicineOrder.orderType))
             }
         ) {
-            Text(
-                text = "Название",
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    fontFamily = Comfortaa,
-                    textAlign = TextAlign.Center,
-                    color = if (_medicineOrder is MedicineOrder.Name) DarkLavender200 else Color.Gray
-                )
-            )
-            Icon(
-                modifier = Modifier.height(20.dp),
-                imageVector = if (_medicineOrder.orderType is OrderType.Descending  &&  _medicineOrder is MedicineOrder.Name)
-                    Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                contentDescription = "Add",
-                tint =  if (_medicineOrder is MedicineOrder.Name) DarkLavender200 else Color.Gray
-            )
+            TitleParam(title = R.string.title, medicineOrder = _medicineOrder)
         }
         Row(
             modifier = Modifier.clickable {
@@ -98,23 +65,25 @@ fun SortParam(medicineOrder: MedicineOrder,
                 }
                 onOrderChange(MedicineOrder.Few(_medicineOrder.orderType))}
         ) {
-            Text(
-                text = "Количество",
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    fontFamily = Comfortaa,
-                    textAlign = TextAlign.Center,
-                    color = if (_medicineOrder is MedicineOrder.Few) DarkLavender200 else Color.Gray
-                )
-            )
-            Icon(
-                modifier = Modifier.height(20.dp),
-                imageVector = if (_medicineOrder.orderType is OrderType.Descending &&  _medicineOrder is MedicineOrder.Few)
-                    Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                contentDescription = "Add",
-                tint = if (_medicineOrder is MedicineOrder.Few) DarkLavender200 else Color.Gray
-            )
+            TitleParam(title = R.string.amount, medicineOrder = _medicineOrder)
         }
     }
+}
+
+@Composable
+fun TitleParam(title: Int, medicineOrder: MedicineOrder){
+    Text(
+        text = stringResource(title),
+        style = MaterialTheme.typography.labelSmall.copy(
+            color = if (medicineOrder is MedicineOrder.Date) DarkLavender200 else Color.Gray
+        )
+    )
+    Icon(
+        modifier = Modifier.height(20.dp),
+        imageVector = if (medicineOrder.orderType is OrderType.Descending  &&  medicineOrder is MedicineOrder.Date)
+            Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
+        contentDescription = "Add",
+        tint = if (medicineOrder is MedicineOrder.Date) DarkLavender200 else Color.Gray
+    )
 }
 

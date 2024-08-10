@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -21,17 +22,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.homemedicalkit.R
 import com.example.homemedicalkit.feature_medicine.presentation.kits_screen.components.getColorById
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.BlueSerface
-import com.example.homemedicalkit.ui.theme.Comfortaa
 import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 
 @Composable
@@ -44,14 +43,8 @@ fun KitDialog(
         onDismissRequest = { navController.navigateUp() },
         title = {
             Text(
-                text = "Новая аптечка",
-                style = TextStyle(
-                    textAlign = TextAlign.Center,
-                    fontFamily = Comfortaa,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 20.sp,
-                    color = DarkBlueOutlined
-                )
+                text = stringResource(R.string.new_first_aid_kit),
+                style = MaterialTheme.typography.bodyMedium
             )
         },
         text = {
@@ -68,21 +61,16 @@ fun KitDialog(
                 OutlinedTextField(
                     modifier = Modifier
                         .background(Color.Transparent),
-                    shape = RoundedCornerShape(15.dp),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)),
                     value = viewModel.kitName.value,
                     onValueChange = {
                         viewModel.onEvent(AddEditKitEvent.EnteredName(it))
                     },
+                    textStyle = MaterialTheme.typography.bodySmall,
                     placeholder = {
                         Text(
-                            "Название",
-                            style = TextStyle(
-                                textAlign = TextAlign.Center,
-                                fontFamily = Comfortaa,
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 14.sp,
-                                color = DarkBlueOutlined
-                            )
+                            stringResource(R.string.title),
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 )
@@ -96,12 +84,8 @@ fun KitDialog(
                 }
             ) {
                 Text(
-                    text = "ОК",
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = DarkBlueOutlined
-                    )
+                    text = stringResource(R.string.ok),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         },
@@ -112,12 +96,8 @@ fun KitDialog(
                 }
             ) {
                 Text(
-                    text = "Отмена",
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = DarkBlueOutlined
-                    )
+                    text = stringResource(R.string.cancel),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

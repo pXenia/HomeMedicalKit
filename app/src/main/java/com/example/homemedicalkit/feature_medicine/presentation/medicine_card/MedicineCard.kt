@@ -34,6 +34,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults.TrailingIcon
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,12 +52,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -67,8 +66,6 @@ import com.example.homemedicalkit.presentation.medicineCard.components.DateAlert
 import com.example.homemedicalkit.presentation.medicineCard.imageTools.ComposeFileProvider
 import com.example.homemedicalkit.ui.theme.Blue1
 import com.example.homemedicalkit.ui.theme.Blue2
-import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkBlueOutlined
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
 import com.example.homemedicalkit.ui.theme.LightBlue2
 
@@ -96,7 +93,10 @@ fun MedicineCard(navController: NavHostController,
             imageUri.value = uri
             cameraLauncher.launch(imageUri.value)
         } else {
-            Toast.makeText(context, "Необходим доступ к камере!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.access_to_the_camera), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -106,7 +106,7 @@ fun MedicineCard(navController: NavHostController,
     val heightScr = LocalConfiguration.current.screenHeightDp.dp
     val heightNav = LocalConfiguration.current.navigation.dp
     val kitsNames = viewModel.stateKits
-    val kitsIsEmpty = kitsNames.isEmpty()
+    val isKitsEmpty = kitsNames.isEmpty()
 
     val scroll = rememberScrollState()
     HomeMedicalKitTheme {
@@ -152,13 +152,12 @@ fun MedicineCard(navController: NavHostController,
                             Image(
                                 painter = rememberAsyncImagePainter(
                                     viewModel.medicineImage.value.imageUri.toUri(),
-                                    contentScale = ContentScale.Crop),
+                                ),
                                 contentDescription = "",
                                 modifier = Modifier
                                     .paint(
                                         painter = painterResource(id = R.drawable.pharmacist_bro),
                                         contentScale = ContentScale.FillBounds
-
                                     ),
                                 contentScale = ContentScale.Crop
                             )
@@ -198,12 +197,15 @@ fun MedicineCard(navController: NavHostController,
                             FloatingActionButton(
                                 containerColor = LightBlue2,
                                 onClick = {
-                                    if (!kitsIsEmpty) {
+                                    if (!isKitsEmpty) {
                                         viewModel.onEvent(AddEditMedicineEvent.SaveMedicine)
                                         navController.navigateUp()
-                                    }
-                                    else{
-                                        Toast.makeText(context,"Сначала добавьте аптечку!", Toast.LENGTH_LONG).show()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.add_a_first_aid_kit),
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 },
                                 shape = CircleShape
@@ -217,7 +219,7 @@ fun MedicineCard(navController: NavHostController,
                     }
                     Spacer(modifier = Modifier.padding(5.dp))
                     Column(modifier = Modifier.padding(10.dp)) {
-                        Row() {
+                        Row{
                             DateAlertDialog(viewModel)
                             Spacer(modifier = Modifier.padding(5.dp))
                             DropdownMenuBox(viewModel)
@@ -226,25 +228,20 @@ fun MedicineCard(navController: NavHostController,
                         Row {
                             OutlinedTextField(
                                 modifier = Modifier
-                                    .height(52.dp)
+                                    .height(dimensionResource(R.dimen.out_lined_text_field_height))
                                     .width(250.dp)
-                                    .clip(RoundedCornerShape(20.dp))
                                     .background(Color.Transparent),
-                                shape = RoundedCornerShape(20.dp),
+                                shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)),
                                 singleLine = true,
                                 value = nameState,
+                                textStyle = MaterialTheme.typography.bodySmall,
                                 onValueChange = {
                                     viewModel.onEvent(AddEditMedicineEvent.EnteredName(it))
                                 },
                                 placeholder = {
                                     Text(
-                                        "Название",
-                                        style = TextStyle(
-                                            textAlign = TextAlign.Center,
-                                            fontFamily = Comfortaa,
-                                            fontWeight = FontWeight.ExtraBold,
-
-                                        )
+                                        stringResource(R.string.title),
+                                        style = MaterialTheme.typography.bodySmall
                                     )
                                 }
                             )
@@ -261,14 +258,8 @@ fun MedicineCard(navController: NavHostController,
                             Text(
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically),
-                                text = "Мало",
-                                style = TextStyle(
-                                    textAlign = TextAlign.Center,
-                                    fontFamily = Comfortaa,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    fontSize = 20.sp,
-                                    color = DarkBlueOutlined
-                                )
+                                text = stringResource(R.string.few),
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                         Spacer(modifier = Modifier.padding(10.dp))
@@ -276,37 +267,29 @@ fun MedicineCard(navController: NavHostController,
                             modifier = Modifier
                                 .height(heightScr * 0.4f)
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(20.dp))
                                 .background(Color.Transparent),
-                            shape = RoundedCornerShape(20.dp),
+                            shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)),
                             value = descriptionState,
                             maxLines = 14,
                             onValueChange = {
                                 viewModel.onEvent(AddEditMedicineEvent.EnteredDescription(it))
                             },
-                            textStyle = TextStyle(
-                                fontFamily = Comfortaa,
-                                fontSize = 16.sp,
-                            ),
+                            textStyle = MaterialTheme.typography.bodySmall,
                             placeholder = {
                                 Text(
-                                    "Описание",
-                                    style = TextStyle(
-                                        textAlign = TextAlign.Center,
-                                        fontFamily = Comfortaa,
-                                        fontWeight = FontWeight.ExtraBold,
-                                    )
+                                    stringResource(R.string.description),
+                                    style = MaterialTheme.typography.bodySmall
                                 )
                             }
                         )
                         Spacer(modifier = Modifier.padding(heightNav + 35.dp))
-
                     }
                 }
             }
         )
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownMenuBox(viewModel: AddEditMedicineViewModel) {
@@ -329,12 +312,12 @@ fun DropdownMenuBox(viewModel: AddEditMedicineViewModel) {
             trailingIcon = { TrailingIcon(expanded = expanded.value) },
             singleLine = true,
             modifier = Modifier
-                .height(52.dp)
+                .height(dimensionResource(R.dimen.out_lined_text_field_height))
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)))
                 .background(Blue1)
                 .menuAnchor(),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)),
         )
 
         ExposedDropdownMenu(

@@ -34,9 +34,6 @@ class AddEditMedicineViewModel @Inject constructor(
     private val _medicineFew = mutableStateOf(false)
     val medicineFew: State<Boolean> = _medicineFew
 
-    private val _medicineTags = mutableStateOf("")
-    val medicineTags: State<String> = _medicineTags
-
     private val _medicineKit = mutableStateOf( savedStateHandler.get<Int>("kitId") ?:  -1)
     val medicineKit: State<Int> = _medicineKit
 

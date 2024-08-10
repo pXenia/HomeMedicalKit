@@ -30,6 +30,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -43,17 +44,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -64,8 +61,6 @@ import com.example.homemedicalkit.feature_medicine.domain.model.Medicine
 import com.example.homemedicalkit.presentation.medicinesList.components.SortParam
 import com.example.homemedicalkit.presentation.util.Screen
 import com.example.homemedicalkit.ui.theme.Blue1
-import com.example.homemedicalkit.ui.theme.Comfortaa
-import com.example.homemedicalkit.ui.theme.DarkLavender200
 import com.example.homemedicalkit.ui.theme.HomeMedicalKitTheme
 import com.example.homemedicalkit.ui.theme.RedContainerDate
 import com.example.homemedicalkit.ui.theme.YellowContainerFew
@@ -123,7 +118,8 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                             modifier = Modifier
                                 .height(140.dp)
                                 .graphicsLayer {
-                                    alpha = 1f - (scroll.value.toFloat() / scroll.maxValue) }
+                                    alpha = 1f - (scroll.value.toFloat() / scroll.maxValue)
+                                }
                                 .align(Alignment.TopEnd),
                             painter = painterResource(id = R.drawable.medicine_amico),
                             contentDescription = ""
@@ -134,17 +130,10 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                                 .padding(start = 20.dp)
                                 .graphicsLayer {
                                     alpha = 1f - (scroll.value.toFloat() / scroll.maxValue)
-
                                 }
                                 .fillMaxWidth(),
                             text = viewModel.kitName.value,
-                            style = TextStyle(
-                                shadow = Shadow(DarkLavender200, blurRadius = 2f),
-                                fontFamily = Comfortaa,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 34.sp,
-                                color = DarkLavender200
-                            )
+                            style = MaterialTheme.typography.titleLarge
                         )
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -166,7 +155,6 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
                             MedicineCardSmall(
                                 medicine = medicine,
                                 navController = navController,
-                                viewModel = viewModel
                             )
                         }
 
@@ -179,7 +167,7 @@ fun MedicinesList(viewModel: MedicinesViewModel = hiltViewModel(),
 }
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewModel: MedicinesViewModel) {
+fun MedicineCardSmall(medicine: Medicine, navController: NavController) {
     val sdf = SimpleDateFormat("dd.MM.yyyy")
     val toggle = remember { mutableStateOf(false) }
     val animatedPadding = animateDpAsState(targetValue = if (toggle.value) 5.dp else 0.dp,
@@ -192,11 +180,11 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
         { YellowContainerFew }
         else Blue1
     Card(
-        shape = RoundedCornerShape(30.dp),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)),
         modifier = Modifier
             .shadow(
                 elevation = 8.dp,
-                shape = RoundedCornerShape(30.dp)
+                shape = RoundedCornerShape(dimensionResource(R.dimen.rounded_corner))
             )
             .padding(animatedPadding.value)
             .fillMaxWidth()
@@ -209,7 +197,7 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                         )
 
                     },
-                    onPress = {toggle.value = false},
+                    onPress = { toggle.value = false },
                     onLongPress = {
                         toggle.value = true
                         navController.navigate(
@@ -228,7 +216,7 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                     .fillMaxHeight()
                     .width(160.dp)
                     .padding(8.dp)
-                    .clip(RoundedCornerShape(30.dp))
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.rounded_corner)))
                     .paint(painter = painterResource(id = R.drawable.thermometer)),
                 contentScale = ContentScale.Crop
             )
@@ -240,22 +228,13 @@ fun MedicineCardSmall(medicine: Medicine, navController: NavController, viewMode
                 Text(
                     text = medicine.medicineName,
                     modifier = Modifier.fillMaxWidth(),
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
+                    style = MaterialTheme.typography.labelMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = sdf.format(medicine.medicineDate),
                     modifier = Modifier.fillMaxWidth(),
-                    style = TextStyle(
-                        fontFamily = Comfortaa,
-                        fontSize = 14.sp,
-                        textAlign = TextAlign.Center
-                    )
+                    style = MaterialTheme.typography.labelSmall
                 )
             }
         }
