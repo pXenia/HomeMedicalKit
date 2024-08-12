@@ -25,65 +25,76 @@ import com.example.homemedicalkit.ui.theme.DarkLavender200
 @Composable
 fun SortParam(medicineOrder: MedicineOrder,
               onOrderChange: (MedicineOrder) -> Unit) {
-    var _medicineOrder = medicineOrder
     Row(modifier =  Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround){
         Row(
             modifier = Modifier.clickable {
-                _medicineOrder = if (_medicineOrder !is MedicineOrder.Date) {
+                val newOrder = if (medicineOrder !is MedicineOrder.Date) {
                     MedicineOrder.Date(OrderType.Descending)
-                }else if (_medicineOrder.orderType == OrderType.Descending){
+                } else if (medicineOrder.orderType == OrderType.Descending) {
                     MedicineOrder.Date(OrderType.Ascending)
-                }else{
+                } else {
                     MedicineOrder.Date(OrderType.Descending)
                 }
-                onOrderChange(MedicineOrder.Date(_medicineOrder.orderType))}
-        ) {
-            TitleParam(title = R.string.date, medicineOrder = _medicineOrder)
-        }
-        Row(
-            modifier = Modifier.clickable {
-                _medicineOrder = if (_medicineOrder !is MedicineOrder.Name) {
-                    MedicineOrder.Name(OrderType.Descending)
-                }else if (_medicineOrder.orderType == OrderType.Descending){
-                    MedicineOrder.Name(OrderType.Ascending)
-                }else{
-                    MedicineOrder.Name(OrderType.Descending)
-                }
-                onOrderChange(MedicineOrder.Name(_medicineOrder.orderType))
+                onOrderChange(newOrder)
             }
         ) {
-            TitleParam(title = R.string.title, medicineOrder = _medicineOrder)
+            TitleParam(
+                title = R.string.date,
+                isSelected = medicineOrder is MedicineOrder.Date,
+                isDescending = medicineOrder.orderType == OrderType.Descending
+            )
         }
         Row(
             modifier = Modifier.clickable {
-                _medicineOrder = if (_medicineOrder !is MedicineOrder.Few) {
+                val newOrder = if (medicineOrder !is MedicineOrder.Name) {
+                    MedicineOrder.Name(OrderType.Descending)
+                } else if (medicineOrder.orderType == OrderType.Descending) {
+                    MedicineOrder.Name(OrderType.Ascending)
+                } else {
+                    MedicineOrder.Name(OrderType.Descending)
+                }
+                onOrderChange(newOrder)
+            }
+        ) {
+            TitleParam(
+                title = R.string.title,
+                isSelected = medicineOrder is MedicineOrder.Name,
+                isDescending = medicineOrder.orderType == OrderType.Descending
+            )
+        }
+        Row(
+            modifier = Modifier.clickable {
+                val newOrder = if (medicineOrder !is MedicineOrder.Few) {
                     MedicineOrder.Few(OrderType.Descending)
-                }else if (_medicineOrder.orderType == OrderType.Descending){
+                } else if (medicineOrder.orderType == OrderType.Descending) {
                     MedicineOrder.Few(OrderType.Ascending)
-                }else{
+                } else {
                     MedicineOrder.Few(OrderType.Descending)
                 }
-                onOrderChange(MedicineOrder.Few(_medicineOrder.orderType))}
+                onOrderChange(newOrder)
+            }
         ) {
-            TitleParam(title = R.string.amount, medicineOrder = _medicineOrder)
+            TitleParam(
+                title = R.string.amount,
+                isSelected = medicineOrder is MedicineOrder.Few,
+                isDescending = medicineOrder.orderType == OrderType.Descending
+            )
         }
     }
 }
 
 @Composable
-fun TitleParam(title: Int, medicineOrder: MedicineOrder){
+fun TitleParam(title: Int, isSelected: Boolean, isDescending: Boolean) {
     Text(
         text = stringResource(title),
         style = MaterialTheme.typography.labelSmall.copy(
-            color = if (medicineOrder is MedicineOrder.Date) DarkLavender200 else Color.Gray
+            color = if (isSelected) DarkLavender200 else Color.Gray
         )
     )
     Icon(
         modifier = Modifier.height(20.dp),
-        imageVector = if (medicineOrder.orderType is OrderType.Descending  &&  medicineOrder is MedicineOrder.Date)
-            Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-        contentDescription = "Add",
-        tint = if (medicineOrder is MedicineOrder.Date) DarkLavender200 else Color.Gray
+        imageVector = if (isDescending) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
+        contentDescription = "Sort Order",
+        tint = if (isSelected) DarkLavender200 else Color.Gray
     )
 }
-
